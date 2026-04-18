@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CourseNoteSharingSystem.Data;
 using CourseNoteSharingSystem.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CourseNoteSharingSystem.Controllers
 {
     public class NotesController : Controller
     {
         private readonly CourseNoteSharingSystemContext _context;
+        
 
         public NotesController(CourseNoteSharingSystemContext context)
         {
             _context = context;
+            
         }
 
         // GET: Notes
@@ -25,6 +28,7 @@ namespace CourseNoteSharingSystem.Controllers
             var notes = _context.Note.ToList();
             return View(notes);
         }
+
 
         // GET: Notes/Details/5
         public async Task<IActionResult> Details(int? id)

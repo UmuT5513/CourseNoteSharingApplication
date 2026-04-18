@@ -1,7 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+
 using CourseNoteSharingSystem.Data;
+
+using CourseNoteSharingSystem.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddIdentity<User, Role>().AddEntityFrameworkStores<CourseNoteSharingSystemContext>();
+
 // veritabanı servisini ekle
 builder.Services.AddDbContext<CourseNoteSharingSystemContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon") ?? throw new InvalidOperationException("Connection string 'CourseNoteSharingSystemContext' not found.")));

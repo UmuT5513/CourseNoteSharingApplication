@@ -1,12 +1,15 @@
-﻿namespace CourseNoteSharingSystem.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace CourseNoteSharingSystem.Models
 {
-    public class User
+    public class User : IdentityUser<int>
     {
-        public int Id { get; set; }
+        public int birthDate { get; set; }
 
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string PasswordHash { get; set; }
+        // One user can have many notes
+        public ICollection<Note> Notes { get; set; } = new List<Note>();
 
+        // one user can create many notes in many courses
+        public ICollection<Course> Courses { get; set; } = new List<Course>();
     }
 }
