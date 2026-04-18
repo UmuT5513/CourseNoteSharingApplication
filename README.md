@@ -1,64 +1,31 @@
 # CourseNoteSharingSystem
 
-A simple ASP.NET Core web application for sharing course notes.
+Course notes sharing web app built with ASP.NET Core and EF Core.
 
-## Tech Stack
+## Stack
 
 - .NET 10
-- ASP.NET Core MVC with Razor Views
+- ASP.NET Core MVC + Razor Views
 - Entity Framework Core
 - SQL Server
-- Bootstrap + jQuery validation
 
-## Project Structure
+## Features
 
-- `CourseNoteSharingSystem/Program.cs`  
-  Application startup, service registration, middleware, and route configuration.
+- CRUD for **Notes**, **Courses**, and **Users**
+- Layered MVC flow: `Controller -> DbContext -> View`
+- Authentication progress: **Sign up completed**, next step is **Sign in**
 
-- `CourseNoteSharingSystem/Data/CourseNoteSharingSystemContext.cs`  
-  EF Core `DbContext` with `DbSet`s for:
-  - `Note`
-  - `Course`
-  - `User`
+## Key Files
 
-- `CourseNoteSharingSystem/Models/`  
-  Domain models:
-  - `Note`
-  - `Course`
-  - `User`
-  - `ErrorViewModel`
+- `CourseNoteSharingSystem/Program.cs` – app startup and middleware
+- `CourseNoteSharingSystem/Data/CourseNoteSharingSystemContext.cs` – EF Core context
+- `CourseNoteSharingSystem/Models/` – domain models
+- `CourseNoteSharingSystem/Controllers/` – MVC controllers
+- `CourseNoteSharingSystem/Views/` – Razor views
+- `CourseNoteSharingSystem/appsettings.json` – configuration and `SqlCon`
 
-- `CourseNoteSharingSystem/Controllers/`  
-  MVC controllers for application logic and CRUD flows:
-  - `HomeController`
-  - `NotesController`
-  - `CoursesController`
-  - `UsersController`
+## Run
 
-- `CourseNoteSharingSystem/Views/`  
-  Razor views grouped by controller (`Notes`, `Courses`, `Users`, `Home`) plus shared layout files.
-
-- `CourseNoteSharingSystem/wwwroot/`  
-  Static assets (CSS, JavaScript, libraries).
-
-- `CourseNoteSharingSystem/appsettings.json`  
-  Configuration values including SQL Server connection string (`SqlCon`).
-
-## What the App Does
-
-The app provides basic CRUD operations for:
-
-- Notes
-- Courses
-- Users
-
-Typical flow:
-
-`Request -> Controller -> DbContext -> View -> Response`
-
-## Run Locally
-
-1. Update the `SqlCon` connection string in `CourseNoteSharingSystem/appsettings.json` if needed.
-2. Build and run the project in Visual Studio.
-3. Open the app URL and use the default route:
-   - `/` -> `Home/Index`
+1. Set `SqlCon` in `CourseNoteSharingSystem/appsettings.json`.
+2. Build and run the project.
+3. Open `/` (`Home/Index`).
