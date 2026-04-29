@@ -10,11 +10,16 @@ namespace CourseNoteSharingSystem.Controllers
 
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public HomeController(UserManager<User> userManager, RoleManager<Role> roleManager)
+        public HomeController(
+            UserManager<User> userManager, 
+            RoleManager<Role> roleManager, 
+            SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
         }
         public IActionResult Index()
         {
@@ -73,6 +78,35 @@ namespace CourseNoteSharingSystem.Controllers
             return View(model);
         }
 
+        // formu oluşturacak olan endpoint. Bunun post halini yazmamız gerekiyor.
+        public IActionResult SignIn()
+        {
+            return View(new SignInModel());
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> SignIn(SignInModel model)
+        {
+            // parametrik olarak formdan dönen modeli karşılamamız gerekiyor.
+
+            if (ModelState.IsValid)
+            {
+                // Sign in logic here
+                var signInResult = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent:false, lockoutOnFailure:true);
+
+                if (signInResult.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Username or password is incorrect.");
+                }
+            }
+
+            return View(model);
+        }
 
         public IActionResult Privacy()
         {

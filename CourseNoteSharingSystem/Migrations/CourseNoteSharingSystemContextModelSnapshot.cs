@@ -173,8 +173,8 @@ namespace CourseNoteSharingSystem.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("birthDate")
-                        .HasColumnType("int");
+                    b.Property<DateOnly>("birthDate")
+                        .HasColumnType("date");
 
                     b.HasKey("Id");
 

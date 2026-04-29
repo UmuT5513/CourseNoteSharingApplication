@@ -4,7 +4,7 @@ namespace CourseNoteSharingSystem.Models
 {
     public class User : IdentityUser<int>
     {
-        public int birthDate { get; set; }
+        public DateOnly birthDate { get; set; }
 
         // One user can have many notes
         public ICollection<Note> Notes { get; set; } = new List<Note>();

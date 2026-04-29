@@ -6,7 +6,15 @@ using CourseNoteSharingSystem.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddIdentity<User, Role>().AddEntityFrameworkStores<CourseNoteSharingSystemContext>();
+builder.Services.AddIdentity<User, Role>( opt =>
+{
+    opt.Password.RequireDigit = false;
+    opt.Password.RequiredLength = 1;
+    opt.Password.RequireNonAlphanumeric = false;
+    opt.Password.RequireUppercase = false;
+    opt.Password.RequireLowercase = false;
+    opt.Lockout.MaxFailedAccessAttempts = 5;
+}).AddEntityFrameworkStores<CourseNoteSharingSystemContext>();
 
 // veritabanı servisini ekle
 builder.Services.AddDbContext<CourseNoteSharingSystemContext>(options =>

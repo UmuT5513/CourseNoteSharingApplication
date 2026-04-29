@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseNoteSharingSystem.Migrations
 {
     [DbContext(typeof(CourseNoteSharingSystemContext))]
-    [Migration("20260418074752_Initial")]
-    partial class Initial
+    [Migration("20260429202215_FixBirthDateType")]
+    partial class FixBirthDateType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,8 +176,8 @@ namespace CourseNoteSharingSystem.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("birthDate")
-                        .HasColumnType("int");
+                    b.Property<DateOnly>("birthDate")
+                        .HasColumnType("date");
 
                     b.HasKey("Id");
 

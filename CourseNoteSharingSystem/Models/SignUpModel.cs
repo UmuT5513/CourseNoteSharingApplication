@@ -10,8 +10,10 @@
     
         public string Email { get; set; }
     
-        public int birthDate { get; set; }
+        public DateOnly birthDate { get; set; }
 
         public bool isAdmin { get; set; }
+
+        public bool deneme { get; set; } = false;
     }
 }
