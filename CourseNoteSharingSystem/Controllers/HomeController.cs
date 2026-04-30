@@ -93,16 +93,43 @@ namespace CourseNoteSharingSystem.Controllers
             if (ModelState.IsValid)
             {
                 // Sign in logic here
+                var user = await _userManager.FindByNameAsync(model.UserName);
                 var signInResult = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent:false, lockoutOnFailure:true);
 
                 if (signInResult.Succeeded)
                 {
-                    return RedirectToAction("Index");
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("AdminDashboard");
+                    }
+                    else 
+                    { 
+                        return RedirectToAction("UserDashboard"); 
+                    }
+                    
+                }
+                else if (signInResult.IsLockedOut)
+                {
+                    var lockoutEnd = await _userManager.GetLockoutEndDateAsync(user);
+                    var remainingLockoutTime = (lockoutEnd.Value.UtcDateTime - DateTime.UtcNow).Minutes;
+                    ModelState.AddModelError(string.Empty, $"Your account is locked out. Please try again in {remainingLockoutTime} minutes.");
+                }
+
+
+                // giriş yapan kullanıcının kaç hatalı giriş yaptığı
+                var message = string.Empty;
+
+                if (user != null)
+                {
+                    var failedLogins = await _userManager.GetAccessFailedCountAsync(user);
+                    message = $"{(_userManager.Options.Lockout.MaxFailedAccessAttempts - failedLogins)} more attempts remaining.";
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Username or password is incorrect.");
+                    message = "Username or password is incorrect.";
                 }
+                ModelState.AddModelError(string.Empty, message);
             }
 
             return View(model);
