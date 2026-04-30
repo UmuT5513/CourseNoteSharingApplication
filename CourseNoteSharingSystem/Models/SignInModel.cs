@@ -9,5 +9,7 @@ namespace CourseNoteSharingSystem.Models
         public string UserName { get; set; }
         [Required(ErrorMessage ="Password must be entered!")]
         public string Password { get; set; }
+
+        public bool RememberMe { get; set; }
     }
 }

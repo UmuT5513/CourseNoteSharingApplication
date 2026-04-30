@@ -1,4 +1,5 @@
 using CourseNoteSharingSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -94,7 +95,7 @@ namespace CourseNoteSharingSystem.Controllers
             {
                 // Sign in logic here
                 var user = await _userManager.FindByNameAsync(model.UserName);
-                var signInResult = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent:false, lockoutOnFailure:true);
+                var signInResult = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent:model.RememberMe, lockoutOnFailure:true);
 
                 if (signInResult.Succeeded)
                 {
@@ -135,6 +136,22 @@ namespace CourseNoteSharingSystem.Controllers
             return View(model);
         }
 
+        // Authrization işlemleri.
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult AdminPanel()
+        {
+            return View();
+        }
+
+
+        [Authorize(Roles = "User")]
+        public IActionResult UserDashboard()
+        {
+            return View();
+        }
+        
+        
         public IActionResult Privacy()
         {
             return View();
