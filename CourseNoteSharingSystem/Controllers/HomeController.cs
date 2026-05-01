@@ -136,10 +136,24 @@ namespace CourseNoteSharingSystem.Controllers
             return View(model);
         }
 
+
+        public async Task<IActionResult> SignOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index");
+        }
+
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+
         // Authrization işlemleri.
 
         [Authorize(Roles = "Admin")]
-        public IActionResult AdminPanel()
+        public IActionResult AdminDashboard()
         {
             return View();
         }

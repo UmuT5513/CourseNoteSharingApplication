@@ -13,8 +13,21 @@ builder.Services.AddIdentity<User, Role>( opt =>
     opt.Password.RequireNonAlphanumeric = false;
     opt.Password.RequireUppercase = false;
     opt.Password.RequireLowercase = false;
-    opt.Lockout.MaxFailedAccessAttempts = 5;
+    opt.Lockout.MaxFailedAccessAttempts = 3;
+
 }).AddEntityFrameworkStores<CourseNoteSharingSystemContext>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = new PathString("/Home/SignIn");
+    options.AccessDeniedPath = new PathString("/Home/AccessDenied");
+    options.Cookie.HttpOnly = true;
+    options.Cookie.Name = "CNSSAuthCookie";
+    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+});
+
 
 // veritabanı servisini ekle
 builder.Services.AddDbContext<CourseNoteSharingSystemContext>(options =>
@@ -38,6 +51,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
