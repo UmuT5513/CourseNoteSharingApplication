@@ -160,10 +160,24 @@ namespace CourseNoteSharingSystem.Controllers
 
 
         [Authorize(Roles = "User")]
-        public IActionResult UserDashboard()
+        public async Task<IActionResult> UserDashboard()
         {
-            return View();
-        }
+            var users = _userManager.Users.ToList();
+            var userViewModels = new List<UserWithRolesViewModel>();
+
+            foreach(var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                userViewModels.Add(new UserWithRolesViewModel
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    BirthDate = user.birthDate,
+                    Roles = roles.ToList()
+                });
+            }
+            return View(userViewModels);
+        }   
         
         
         public IActionResult Privacy()

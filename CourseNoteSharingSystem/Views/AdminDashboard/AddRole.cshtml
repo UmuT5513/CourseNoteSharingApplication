@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+
+<h2>Add Role</h2>
+
+<form asp-action="AddRole" method="post">
+    <div class="form-group">
+        <label for="roleName">Role Name</label>
+        <input type="text" class="form-control" name="roleName" required/>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add</button>
+
+    <a asp-action="Roles" class="btn btn-secondary mt-2">Back to Roles</a>
+</form>
+
+
+@if(!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger mt-3">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
