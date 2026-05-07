@@ -1,10 +1,12 @@
 ﻿using CourseNoteSharingSystem.Data;
 using CourseNoteSharingSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseNoteSharingSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminDashboardController : Controller
     {
 
@@ -24,9 +26,22 @@ namespace CourseNoteSharingSystem.Controllers
             _roleManager = roleManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var model = new AdminDashboardViewModel
+            {
+                TotalUsers = _userManager.Users.Count(),
+                TotalRoles = _roleManager.Roles.Count(),
+                
+
+                // Yeni Eklenen Veritabanı Sorguları
+                TotalCourses = _context.Course.Count(),
+                TotalNotes = _context.Note.Count(),
+
+                RecentUsers = _userManager.Users.OrderByDescending(u => u.Id).Take(5).ToList()
+            };
+
+            return View(model);
         }
 
 
@@ -154,7 +169,7 @@ namespace CourseNoteSharingSystem.Controllers
         {
             var role = await _roleManager.FindByIdAsync(id.ToString());
             if (role == null) return NotFound();
-            
+
             return View(role);
         }
 

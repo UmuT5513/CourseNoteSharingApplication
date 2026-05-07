@@ -100,15 +100,11 @@ namespace CourseNoteSharingSystem.Controllers
                 if (signInResult.Succeeded)
                 {
                     var roles = await _userManager.GetRolesAsync(user);
-                    if (User.IsInRole("Admin"))
-                    {
+                    if (roles.Contains("Admin"))
                         return RedirectToAction("AdminDashboard");
-                    }
-                    else 
-                    { 
-                        return RedirectToAction("UserDashboard"); 
-                    }
-                    
+                    else
+                        return RedirectToAction("UserDashboard");
+
                 }
                 else if (signInResult.IsLockedOut)
                 {

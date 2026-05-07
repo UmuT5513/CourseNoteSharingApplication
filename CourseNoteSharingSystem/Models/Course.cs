@@ -8,13 +8,16 @@
 
         public string Code { get; set; }
 
+        public string Department { get; set; }
+
         public string Description { get; set; }
 
 
         // Relationship: The Foreign Key
-        public int? UserId { get; set; }
+        public int? UserId { get; set; } // nullable, çünkü kullanıcı silinse de kurs sistemde kalabilir.
 
-        // Navigation Property: Allows you to access User data from a Note
+        public ICollection<Note> Notes { get; set; } = new List<Note>();
         public User? User { get; set; }
+        
     }
 }

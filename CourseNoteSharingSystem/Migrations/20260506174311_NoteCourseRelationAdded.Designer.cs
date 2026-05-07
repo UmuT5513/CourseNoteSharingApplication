@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseNoteSharingSystem.Migrations
 {
     [DbContext(typeof(CourseNoteSharingSystemContext))]
-    [Migration("20260430131306_AddRememberMe")]
-    partial class AddRememberMe
+    [Migration("20260506174311_NoteCourseRelationAdded")]
+    partial class NoteCourseRelationAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,6 +63,9 @@ namespace CourseNoteSharingSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -82,6 +85,8 @@ namespace CourseNoteSharingSystem.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("UserId");
 
@@ -307,11 +312,19 @@ namespace CourseNoteSharingSystem.Migrations
 
             modelBuilder.Entity("CourseNoteSharingSystem.Models.Note", b =>
                 {
+                    b.HasOne("CourseNoteSharingSystem.Models.Course", "Course")
+                        .WithMany("Notes")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CourseNoteSharingSystem.Models.User", "User")
                         .WithMany("Notes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Course");
 
                     b.Navigation("User");
                 });
@@ -365,6 +378,11 @@ namespace CourseNoteSharingSystem.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CourseNoteSharingSystem.Models.Course", b =>
+                {
+                    b.Navigation("Notes");
                 });
 
             modelBuilder.Entity("CourseNoteSharingSystem.Models.User", b =>

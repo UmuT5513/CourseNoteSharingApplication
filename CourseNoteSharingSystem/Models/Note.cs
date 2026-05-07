@@ -1,4 +1,6 @@
-﻿namespace CourseNoteSharingSystem.Models
+﻿using System.ComponentModel;
+
+namespace CourseNoteSharingSystem.Models
 {
     public class Note
     {
@@ -8,11 +10,21 @@
         public string FilePath { get; set; } = string.Empty;
         public DateTime UploadDate { get; set; }
 
+        public int DownloadCount { get; set; } = 0;
 
-        // Relationship: The Foreign Key
-        public int UserId { get; set; }
+
+        // Relationships: The Foreign Key
+        public int? UserId { get; set; }
+
+        public int CourseId { get; set; }
+
 
         // Navigation Property: Allows you to access User data from a Note
         public User? User { get; set; }
+        public Course? Course { get; set; }
+
+        
     }
 }
+
+

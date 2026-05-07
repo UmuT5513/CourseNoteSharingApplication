@@ -28,6 +28,19 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 });
 
+// dosya yükleme ayarları
+// Dosya boyutu limiti (örn: 50MB)
+builder.Services.Configure<IISServerOptions>(options =>
+{
+    options.MaxRequestBodySize = 52428800; // 50 MB (byte cinsinden)
+});
+
+// Kestrel için (IIS dışında çalışıyorsa)
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 52428800; // 50 MB
+});
+
 
 // veritabanı servisini ekle
 builder.Services.AddDbContext<CourseNoteSharingSystemContext>(options =>

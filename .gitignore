@@ -62,3 +62,7 @@ node_modules/
 secrets.json
 *.pfx
 *.snk
+
+wwwroot/uploads/
+
+

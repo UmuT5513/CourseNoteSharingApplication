@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseNoteSharingSystem.Migrations
 {
     [DbContext(typeof(CourseNoteSharingSystemContext))]
-    [Migration("20260429202215_FixBirthDateType")]
-    partial class FixBirthDateType
+    [Migration("20260507173557_AddDownloadCountToNote")]
+    partial class AddDownloadCountToNote
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,6 +34,10 @@ namespace CourseNoteSharingSystem.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Department")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -63,9 +67,15 @@ namespace CourseNoteSharingSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DownloadCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("FilePath")
                         .IsRequired()
@@ -78,10 +88,12 @@ namespace CourseNoteSharingSystem.Migrations
                     b.Property<DateTime>("UploadDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("UserId");
 
@@ -307,11 +319,18 @@ namespace CourseNoteSharingSystem.Migrations
 
             modelBuilder.Entity("CourseNoteSharingSystem.Models.Note", b =>
                 {
+                    b.HasOne("CourseNoteSharingSystem.Models.Course", "Course")
+                        .WithMany("Notes")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CourseNoteSharingSystem.Models.User", "User")
                         .WithMany("Notes")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Course");
 
                     b.Navigation("User");
                 });
@@ -365,6 +384,11 @@ namespace CourseNoteSharingSystem.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CourseNoteSharingSystem.Models.Course", b =>
+                {
+                    b.Navigation("Notes");
                 });
 
             modelBuilder.Entity("CourseNoteSharingSystem.Models.User", b =>
