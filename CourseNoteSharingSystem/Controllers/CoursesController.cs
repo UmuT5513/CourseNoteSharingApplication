@@ -20,9 +20,18 @@ namespace CourseNoteSharingSystem.Controllers
         }
 
         // GET: Courses
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
-            return View(await _context.Course.ToListAsync());
+            var courses = _context.Course.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                courses = courses.Where(c =>
+                    c.CourseName.Contains(search) ||
+                    c.CourseCode.Contains(search));
+            }
+
+            return View(await courses.ToListAsync());
         }
 
         // GET: Courses/Details/5
@@ -34,7 +43,9 @@ namespace CourseNoteSharingSystem.Controllers
             }
 
             var course = await _context.Course
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(c => c.Notes)
+                .ThenInclude(n => n.User)
+                .FirstOrDefaultAsync(c => c.Id == id);
             if (course == null)
             {
                 return NotFound();

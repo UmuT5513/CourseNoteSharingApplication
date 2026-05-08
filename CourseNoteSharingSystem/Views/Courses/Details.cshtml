@@ -1,36 +1,47 @@
-﻿@model CourseNoteSharingSystem.Models.Course
+﻿
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+@model Course
 
-<div>
-    <h4>Course</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Code)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Code)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<h1>@Model.CourseCode</h1>
+
+<h3>@Model.CourseName</h3>
+
+<hr />
+
+<h4>Notes</h4>
+
+@if(!Model.Notes.Any())
+{
+    <div class="alert alert-warning">
+        No notes yet.
+    </div>
+}
+
+@foreach(var note in Model.Notes)
+{
+    <div class="card mb-3 p-3">
+
+        <h5>@note.Title</h5>
+
+        <p>@note.Description</p>
+
+        <p>
+            Uploaded By:
+            @note.User.UserName
+        </p>
+
+        <a asp-controller="Note"
+           asp-action="Details"
+           asp-route-id="@note.Id"
+           class="btn btn-primary btn-sm">
+
+            View Note
+
+        </a>
+
+    </div>
+}

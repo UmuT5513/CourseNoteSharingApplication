@@ -250,6 +250,7 @@ namespace CourseNoteSharingSystem.Controllers
         }
 
 
+        
         public async Task<IActionResult> Download(int id)
         {
             var note = await _context.Note
@@ -258,8 +259,21 @@ namespace CourseNoteSharingSystem.Controllers
             if (note == null)
                 return NotFound();
 
-            // DOWNLOAD COUNTER
+            // DOWNLOAD COUNT
             note.DownloadCount++;
+
+            // CURRENT USER
+            var user = await _userManager.GetUserAsync(User);
+
+            // LOG
+            var log = new DownloadLog
+            {
+                DownloadDate = DateTime.Now,
+                NoteId = note.Id,
+                UserId = user.Id
+            };
+
+            _context.DownloadLogs.Add(log);
 
             await _context.SaveChangesAsync();
 

@@ -18,6 +18,7 @@ namespace CourseNoteSharingSystem.Data
         public DbSet<CourseNoteSharingSystem.Models.Note> Note { get; set; } = default!;
         public DbSet<CourseNoteSharingSystem.Models.Course> Course { get; set; } = default!;
         public DbSet<CourseNoteSharingSystem.Models.User> User { get; set; } = default!;
+        public DbSet<CourseNoteSharingSystem.Models.DownloadLog> DownloadLogs { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

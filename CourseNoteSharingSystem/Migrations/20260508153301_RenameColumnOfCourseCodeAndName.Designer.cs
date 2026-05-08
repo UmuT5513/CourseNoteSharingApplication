@@ -4,6 +4,7 @@ using CourseNoteSharingSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseNoteSharingSystem.Migrations
 {
     [DbContext(typeof(CourseNoteSharingSystemContext))]
-    partial class CourseNoteSharingSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20260508153301_RenameColumnOfCourseCodeAndName")]
+    partial class RenameColumnOfCourseCodeAndName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,32 +57,6 @@ namespace CourseNoteSharingSystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Course");
-                });
-
-            modelBuilder.Entity("CourseNoteSharingSystem.Models.DownloadLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DownloadDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("NoteId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NoteId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("DownloadLogs");
                 });
 
             modelBuilder.Entity("CourseNoteSharingSystem.Models.Note", b =>
@@ -343,25 +320,6 @@ namespace CourseNoteSharingSystem.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CourseNoteSharingSystem.Models.DownloadLog", b =>
-                {
-                    b.HasOne("CourseNoteSharingSystem.Models.Note", "Note")
-                        .WithMany("DownloadLogs")
-                        .HasForeignKey("NoteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CourseNoteSharingSystem.Models.User", "User")
-                        .WithMany("DownloadLogs")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Note");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CourseNoteSharingSystem.Models.Note", b =>
                 {
                     b.HasOne("CourseNoteSharingSystem.Models.Course", "Course")
@@ -436,16 +394,9 @@ namespace CourseNoteSharingSystem.Migrations
                     b.Navigation("Notes");
                 });
 
-            modelBuilder.Entity("CourseNoteSharingSystem.Models.Note", b =>
-                {
-                    b.Navigation("DownloadLogs");
-                });
-
             modelBuilder.Entity("CourseNoteSharingSystem.Models.User", b =>
                 {
                     b.Navigation("Courses");
-
-                    b.Navigation("DownloadLogs");
 
                     b.Navigation("Notes");
                 });

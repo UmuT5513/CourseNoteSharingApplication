@@ -15,17 +15,19 @@ namespace CourseNoteSharingSystem.Models
         public NoteStatus Status { get; set; }
 
 
-        // Relationships: The Foreign Key
+        
         public int? UserId { get; set; }
 
         public int CourseId { get; set; }
 
 
-        // Navigation Property: Allows you to access User data from a Note
+        
         public User? User { get; set; }
         public Course? Course { get; set; }
 
-        
+        public ICollection<DownloadLog> DownloadLogs { get; set; }
+
+
     }
 
     public enum NoteStatus
