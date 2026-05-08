@@ -1,53 +1,148 @@
 ﻿@model IEnumerable<CourseNoteSharingSystem.Models.Note>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Notes";
 }
 
-<h1>Index</h1>
+<h1 class="mb-4">Course Notes</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FilePath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UploadDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FilePath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UploadDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-primary">
+        Upload New Note
+    </a>
+</div>
+
+<form method="get" class="mb-4">
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <input type="text"
+                   name="search"
+                   value="@Context.Request.Query["search"]"
+                   class="form-control"
+                   placeholder="Search by title..." />
+        </div>
+
+        <div class="col-md-3">
+            <select name="sortOrder" class="form-control">
+
+                <option value="">
+                    Newest
+                </option>
+
+                <option value="downloads">
+                    Most Downloaded
+                </option>
+
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit"
+                    class="btn btn-success w-100">
+
+                Search
+
+            </button>
+        </div>
+
+    </div>
+
+</form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        No notes found.
+    </div>
 }
-    </tbody>
-</table>
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6 mb-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h4 class="card-title">
+                        @item.Title
+                    </h4>
+
+                    <p class="card-text">
+                        @item.Description
+                    </p>
+
+                    <p>
+                        <strong>Upload Date:</strong>
+                        @item.UploadDate.ToShortDateString()
+                    </p>
+
+                    <p>
+                        <strong>Downloads:</strong>
+                        @item.DownloadCount
+                    </p>
+
+                    @if (item.Course != null)
+                    {
+                        <p>
+                            <strong>Course:</strong>
+                            @item.Course.Name
+                        </p>
+                    }
+
+                    @if (item.User != null)
+                    {
+                        <p>
+                            <strong>Uploaded By:</strong>
+                            @item.User.UserName
+                        </p>
+                    }
+
+                </div>
+
+                <div class="card-footer">
+
+                    <a asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-primary btn-sm">
+
+                        Details
+
+                    </a>
+
+                    <a asp-action="Download"
+                       asp-route-id="@item.Id"
+                       class="btn btn-success btn-sm">
+
+                        Download
+
+                    </a>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning btn-sm">
+
+                        Edit
+
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@item.Id"
+                       class="btn btn-danger btn-sm">
+
+                        Delete
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

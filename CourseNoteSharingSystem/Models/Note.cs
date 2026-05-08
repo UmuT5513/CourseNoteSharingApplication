@@ -12,6 +12,8 @@ namespace CourseNoteSharingSystem.Models
 
         public int DownloadCount { get; set; } = 0;
 
+        public NoteStatus Status { get; set; }
+
 
         // Relationships: The Foreign Key
         public int? UserId { get; set; }
@@ -24,6 +26,13 @@ namespace CourseNoteSharingSystem.Models
         public Course? Course { get; set; }
 
         
+    }
+
+    public enum NoteStatus
+    {
+        Pending = 0,
+        Approved = 1,
+        Rejected = 2
     }
 }
 

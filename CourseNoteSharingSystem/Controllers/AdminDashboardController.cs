@@ -3,6 +3,7 @@ using CourseNoteSharingSystem.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CourseNoteSharingSystem.Controllers
 {
@@ -195,5 +196,9 @@ namespace CourseNoteSharingSystem.Controllers
 
             return View(role);
         }
+
+
+        
+
     }
 }

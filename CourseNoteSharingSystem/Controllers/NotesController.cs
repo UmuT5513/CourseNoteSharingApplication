@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CourseNoteSharingSystem.Data;
+using CourseNoteSharingSystem.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CourseNoteSharingSystem.Data;
-using CourseNoteSharingSystem.Models;
-using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CourseNoteSharingSystem.Controllers
 {
@@ -24,10 +25,49 @@ namespace CourseNoteSharingSystem.Controllers
         }
 
         // GET: Notes
-        public IActionResult Index()
+        public async Task<IActionResult> Index(
+            string search,
+            int? courseId,
+            string sortOrder)
         {
-                var notes = _context.Note.ToList();
-            return View(notes);
+            var notes = _context.Note
+            .Include(n => n.Course)
+            .Include(n => n.User)
+            .AsQueryable();
+
+            // SEARCH
+            if (!string.IsNullOrEmpty(search))
+            {
+                notes = notes.Where(n =>
+                    n.Title.Contains(search) || 
+                    n.Description.Contains(search)
+                );
+            }
+
+            // COURSE FILTER
+            if (courseId.HasValue)
+            {
+                notes = notes.Where(n =>
+                    n.CourseId == courseId.Value);
+            }
+
+            // SORT
+            notes = sortOrder switch
+            {
+                "downloads" => notes.OrderByDescending(n => n.DownloadCount),
+
+                "oldest" => notes.OrderBy(n => n.UploadDate),
+
+                _ => notes.OrderByDescending(n => n.UploadDate)
+            };
+
+            // Dropdown için
+            ViewBag.Courses = new SelectList(
+                _context.Course,
+                "Id",
+                "CourseName");
+
+            return View(await notes.ToListAsync());
         }
 
 
@@ -105,8 +145,9 @@ namespace CourseNoteSharingSystem.Controllers
                     CourseId = model.CourseId,
                     FilePath = "/uploads/" + uniqueFileName, // DB'ye bu path kaydedilir
                     UploadDate = DateTime.Now,
-                    UserId = currentUser.Id
-                    
+                    UserId = currentUser.Id, // notu yükleyen kullanıcı
+                    Status = NoteStatus.Pending // Yeni yüklenen notlar onaylanmay bekler
+
                 };
             
                 _context.Add(note);
@@ -208,7 +249,7 @@ namespace CourseNoteSharingSystem.Controllers
             return _context.Note.Any(e => e.Id == id);
         }
 
-        
+
         public async Task<IActionResult> Download(int id)
         {
             var note = await _context.Note
@@ -217,9 +258,44 @@ namespace CourseNoteSharingSystem.Controllers
             if (note == null)
                 return NotFound();
 
-            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", note.FilePath.TrimStart('/'));
+            // DOWNLOAD COUNTER
+            note.DownloadCount++;
+
+            await _context.SaveChangesAsync();
+
+            var fullPath = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot",
+                note.FilePath.TrimStart('/'));
+
+            if (!System.IO.File.Exists(fullPath))
+                return NotFound();
+
             var fileName = Path.GetFileName(fullPath);
-            return PhysicalFile(fullPath, "application/octet-stream", fileName);
+
+            return PhysicalFile(
+                fullPath,
+                "application/octet-stream",
+                fileName);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult PendingNotes()
+        {
+            var notes = _context.Note.Where(n => n.Status == NoteStatus.Pending).ToList();
+            return View(notes);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Approve(int id)
+        {
+            var note = await _context.Note.FirstOrDefaultAsync(n => n.Id == id);
+            if (note == null) return NotFound();
+            note.Status = NoteStatus.Approved;
+            _context.Update(note);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("PendingNotes");
         }
     }
 }
