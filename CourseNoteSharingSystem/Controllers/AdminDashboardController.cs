@@ -58,6 +58,17 @@ namespace CourseNoteSharingSystem.Controllers
             return View(roles);
         }
 
+        public IActionResult Courses()
+        {
+            var courses = _context.Course.ToList();
+            return View(courses);
+        }
+
+        public IActionResult Notes()
+        {
+            return RedirectToAction("Index", "Notes");
+        }
+
         // update user GET method
         public async Task<IActionResult> UpdateUser(int id)
         {
@@ -195,6 +206,12 @@ namespace CourseNoteSharingSystem.Controllers
             }
 
             return View(role);
+        }
+
+
+        public IActionResult PendingNotes()
+        {
+            return RedirectToAction("PendingNotes", "Notes");
         }
 
 

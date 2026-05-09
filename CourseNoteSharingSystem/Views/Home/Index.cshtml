@@ -2,7 +2,88 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+    <div class="hero-card text-white p-5 p-md-6 rounded-4 shadow-lg">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <span class="badge rounded-pill text-bg-light text-success px-3 py-2 mb-3">Course Note Sharing System</span>
+                <h1 class="display-4 fw-bold mb-3">Notlarını paylaş, dersleri birlikte büyüt.</h1>
+                <p class="lead mb-4 opacity-75">
+                    Ders notlarını düzenli bir şekilde yükle, keşfet ve arkadaşlarınla paylaş.
+                    Yeşil ve mavi tonların ferah uyumuyla modern bir başlangıç ekranı.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a class="btn btn-light btn-lg text-success fw-semibold" asp-controller="Courses" asp-action="Index">Kursları İncele</a>
+                    <a class="btn btn-outline-light btn-lg" asp-controller="Notes" asp-action="Index">Notlara Göz At</a>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="feature-panel p-4 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-25">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-bubble me-3">N</div>
+                        <div>
+                            <h2 class="h5 mb-1">Akıllı Not Deneyimi</h2>
+                            <p class="mb-0 opacity-75">Hızlı erişim, temiz görünüm, modern arayüz.</p>
+                        </div>
+                    </div>
+                    <ul class="list-unstyled mb-0 feature-list">
+                        <li>• Ders notlarını kolayca keşfet</li>
+                        <li>• Paylaşım ve erişimi hızlandır</li>
+                        <li>• Yeşil-mavi tema ile ferah tasarım</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .hero-card {
+        background: linear-gradient(135deg, #0f766e 0%, #0ea5e9 55%, #14b8a6 100%);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .hero-card::before {
+        content: "";
+        position: absolute;
+        inset: auto -80px -100px auto;
+        width: 260px;
+        height: 260px;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 50%;
+        filter: blur(8px);
+    }
+
+    .hero-card::after {
+        content: "";
+        position: absolute;
+        top: -60px;
+        left: -60px;
+        width: 180px;
+        height: 180px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+    }
+
+    .hero-card > .row {
+        position: relative;
+        z-index: 1;
+    }
+
+    .icon-bubble {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        background: rgba(255, 255, 255, 0.18);
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+
+    .feature-list li {
+        margin-bottom: 0.5rem;
+        opacity: 0.92;
+    }
+</style>

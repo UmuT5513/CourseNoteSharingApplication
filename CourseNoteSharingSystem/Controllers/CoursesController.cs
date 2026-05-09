@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CourseNoteSharingSystem.Data;
 using CourseNoteSharingSystem.Models;
+using CourseNoteSharingSystem.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CourseNoteSharingSystem.Controllers
 {
@@ -20,6 +22,7 @@ namespace CourseNoteSharingSystem.Controllers
         }
 
         // GET: Courses
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(string search)
         {
             var courses = _context.Course.AsQueryable();
@@ -35,6 +38,7 @@ namespace CourseNoteSharingSystem.Controllers
         }
 
         // GET: Courses/Details/5
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -55,6 +59,7 @@ namespace CourseNoteSharingSystem.Controllers
         }
 
         // GET: Courses/Create
+        [Authorize(Roles = "Admin, User")]
         public IActionResult Create()
         {
             return View();
@@ -65,18 +70,27 @@ namespace CourseNoteSharingSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Code,Description")] Course course)
+        public async Task<IActionResult> Create(CourseCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var course = new Course
+                {
+                    CourseName = model.CourseName,
+                    CourseCode = model.CourseCode,
+                    Description = model.Description,
+                    Department = model.Department
+                };
+
                 _context.Add(course);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(course);
+            return View(model);
         }
 
         // GET: Courses/Edit/5
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,6 +111,7 @@ namespace CourseNoteSharingSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Code,Description")] Course course)
         {
             if (id != course.Id)
@@ -128,6 +143,7 @@ namespace CourseNoteSharingSystem.Controllers
         }
 
         // GET: Courses/Delete/5
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -148,6 +164,7 @@ namespace CourseNoteSharingSystem.Controllers
         // POST: Courses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var course = await _context.Course.FindAsync(id);

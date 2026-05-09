@@ -6,6 +6,59 @@
 
 @model UserDashboardViewModel
 
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Management Panel</h2>
+        <span class="badge bg-dark">User Summary</span>
+    </div>
+    <hr />
+
+    <div class="row">
+        <!-- Kullanıcı Kartı -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2 bg-primary text-white">
+                <div class="card-body">
+                    <div class="text-xs font-weight-bold text-uppercase mb-1">Total Notes</div>
+                    <div class="h5 mb-0 font-weight-bold">@Model.TotalNotes</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rol Kartı -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2 bg-success text-white">
+                <div class="card-body">
+                    <div class="text-xs font-weight-bold text-uppercase mb-1">Total Downloads</div>
+                    <div class="h5 mb-0 font-weight-bold">@Model.TotalDownloads</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kurs Kartı -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2 bg-info text-white">
+                <div class="card-body">
+                    <div class="text-xs font-weight-bold text-uppercase mb-1">TotalComments</div>
+                    <div class="h5 mb-0 font-weight-bold">@Model.TotalComments</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Not Kartı -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2 bg-danger text-white">
+                <div class="card-body">
+                    <div class="text-xs font-weight-bold text-uppercase mb-1">Approved Notes</div>
+                    <div class="h5 mb-0 font-weight-bold">@Model.ApprovedNotes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <h3 class="mb-3">My Notes</h3>
 
 @if (!Model.MyNotes.Any())
@@ -79,7 +132,7 @@ else
 
                     <div class="card-footer">
 
-                        <a asp-controller="Note"
+                        <a asp-controller="Notes"
                            asp-action="Details"
                            asp-route-id="@note.Id"
                            class="btn btn-primary btn-sm">
@@ -88,7 +141,7 @@ else
 
                         </a>
 
-                        <a asp-controller="Note"
+                        <a asp-controller="Notes"
                            asp-action="Download"
                            asp-route-id="@note.Id"
                            class="btn btn-success btn-sm">
@@ -97,7 +150,7 @@ else
 
                         </a>
 
-                        <a asp-controller="Note"
+                        <a asp-controller="Notes"
                            asp-action="Edit"
                            asp-route-id="@note.Id"
                            class="btn btn-warning btn-sm">
@@ -106,7 +159,7 @@ else
 
                         </a>
 
-                        <a asp-controller="Note"
+                        <a asp-controller="Notes"
                            asp-action="Delete"
                            asp-route-id="@note.Id"
                            class="btn btn-danger btn-sm">
@@ -125,3 +178,63 @@ else
     </div>
 }
 
+<h3 class="mb-3 mt-5">My Comments</h3>
+
+@if (!Model.MyComments.Any())
+{
+    <div class="alert alert-warning">
+        You have not written any comments yet.
+    </div>
+}
+else
+{
+    <div class="row">
+
+        @foreach (var comment in Model.MyComments)
+        {
+            <div class="col-md-12 mb-3">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between">
+
+                            <h5>
+                                @comment.Note.Title
+                            </h5>
+
+                            <small class="text-muted">
+                                @comment.CreatedAt.ToString("g")
+                            </small>
+
+                        </div>
+
+                        <hr />
+
+                        <p>
+                            @comment.Content
+                        </p>
+
+                    </div>
+
+                    <div class="card-footer">
+
+                        <a asp-controller="Notes"
+                           asp-action="Details"
+                           asp-route-id="@comment.NoteId"
+                           class="btn btn-primary btn-sm">
+
+                            Go To Note
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+}

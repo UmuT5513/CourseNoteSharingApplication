@@ -1,7 +1,9 @@
 using CourseNoteSharingSystem.Models;
+using CourseNoteSharingSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.View;
 using System.Diagnostics;
 
 namespace CourseNoteSharingSystem.Controllers
@@ -14,8 +16,8 @@ namespace CourseNoteSharingSystem.Controllers
         private readonly SignInManager<User> _signInManager;
 
         public HomeController(
-            UserManager<User> userManager, 
-            RoleManager<Role> roleManager, 
+            UserManager<User> userManager,
+            RoleManager<Role> roleManager,
             SignInManager<User> signInManager)
         {
             _userManager = userManager;
@@ -95,15 +97,15 @@ namespace CourseNoteSharingSystem.Controllers
             {
                 // Sign in logic here
                 var user = await _userManager.FindByNameAsync(model.UserName);
-                var signInResult = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent:model.RememberMe, lockoutOnFailure:true);
+                var signInResult = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: model.RememberMe, lockoutOnFailure: true);
 
                 if (signInResult.Succeeded)
                 {
                     var roles = await _userManager.GetRolesAsync(user);
                     if (roles.Contains("Admin"))
-                        return RedirectToAction("Index","AdminDashboard");
+                        return RedirectToAction("Index", "AdminDashboard");
                     else
-                        return RedirectToAction("UserDashboard");
+                        return RedirectToAction("Index", "UserDashboard");
 
                 }
                 else if (signInResult.IsLockedOut)
@@ -161,7 +163,7 @@ namespace CourseNoteSharingSystem.Controllers
             var users = _userManager.Users.ToList();
             var userViewModels = new List<UserWithRolesViewModel>();
 
-            foreach(var user in users)
+            foreach (var user in users)
             {
                 var roles = await _userManager.GetRolesAsync(user);
                 userViewModels.Add(new UserWithRolesViewModel
@@ -173,9 +175,9 @@ namespace CourseNoteSharingSystem.Controllers
                 });
             }
             return View(userViewModels);
-        }   
-        
-        
+        }
+
+
         public IActionResult Privacy()
         {
             return View();
@@ -185,6 +187,83 @@ namespace CourseNoteSharingSystem.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public async Task<IActionResult> DontYouHaveAnAccount()
+        {
+            return RedirectToAction("SignUp");
+        }
+
+        public async Task<IActionResult> ForgotPassword()
+        {
+            return View(new ForgotPasswordViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    // Generate password reset token
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    // Here you would typically send the token to the user's email address
+                    // For demonstration purposes, we'll just display it on the page
+                    ViewBag.Token = token;
+                    ViewBag.Email = model.Email;
+                    return View("ForgotPasswordConfirmation");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "No user found with that email address.");
+                }
+            }
+            return View(model);
+        }
+
+
+        [HttpGet]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+
+
+        public IActionResult ResetPassword(string token, string email)
+        {
+            if (token == null || email == null) return RedirectToAction("Index", "Home");
+
+            var model = new ResetPasswordViewModel { Token = token, Email = email };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null) return RedirectToAction("ResetPasswordConfirmation");
+
+            // Zinciri tamamlayan asıl komut:
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation"); // "Şifreniz başarıyla değiştirildi" sayfası
+            }
+
+            return View(model); // Hata varsa sayfada kal
+        }
+
+        [HttpGet]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            // Bu sayfa sadece bilgilendirme amaçlıdır.
+            return View();
         }
     }
 }

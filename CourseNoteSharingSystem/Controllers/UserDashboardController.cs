@@ -1,12 +1,14 @@
 ﻿using CourseNoteSharingSystem.Data;
 using CourseNoteSharingSystem.Models;
+using CourseNoteSharingSystem.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CourseNoteSharingSystem.ViewModels;
 
 namespace CourseNoteSharingSystem.Controllers
 {
+    [Authorize(Roles = "User")]
     public class UserDashboardController : Controller
     {
         private readonly CourseNoteSharingSystemContext _context;
@@ -23,7 +25,7 @@ namespace CourseNoteSharingSystem.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var user = _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
 
             var myNotes = await _context.Note
             .Include(n => n.Course)

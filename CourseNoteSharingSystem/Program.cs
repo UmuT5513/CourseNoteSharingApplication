@@ -3,6 +3,7 @@
 using CourseNoteSharingSystem.Data;
 
 using CourseNoteSharingSystem.Models;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,9 @@ builder.Services.AddIdentity<User, Role>( opt =>
     opt.Password.RequireLowercase = false;
     opt.Lockout.MaxFailedAccessAttempts = 3;
 
-}).AddEntityFrameworkStores<CourseNoteSharingSystemContext>();
+})
+    .AddEntityFrameworkStores<CourseNoteSharingSystemContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -71,7 +74,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Home}/{action=SignIn}/{id?}")
     .WithStaticAssets();
 
 

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace CourseNoteSharingSystem.Controllers
 {
+    
     public class NotesController : Controller
     {
         private readonly CourseNoteSharingSystemContext _context;
@@ -24,6 +25,7 @@ namespace CourseNoteSharingSystem.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Notes
         public async Task<IActionResult> Index(
             string search,
@@ -72,6 +74,7 @@ namespace CourseNoteSharingSystem.Controllers
 
 
         // GET: Notes/Details/5
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -85,6 +88,7 @@ namespace CourseNoteSharingSystem.Controllers
                 .Include(n => n.Comments)
                 .ThenInclude(c => c.User)
                 .FirstOrDefaultAsync(n => n.Id == id);
+
             if (note == null)
             {
                 return NotFound();
@@ -94,10 +98,11 @@ namespace CourseNoteSharingSystem.Controllers
         }
 
         // GET: Notes/Create
+        [Authorize(Roles = "Admin, User")]
         public IActionResult Create()
         {
             // Dropdown için course listesi
-            ViewBag.Courses = new SelectList(_context.Course.ToList(), "Id", "Name");
+            ViewBag.Courses = new SelectList(_context.Course.ToList(), "Id", "CourseName");
             return View();
         }
 
@@ -106,6 +111,7 @@ namespace CourseNoteSharingSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Create(NoteUploadViewModel model)
         {
             var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".txt", ".pptx" };
@@ -163,6 +169,7 @@ namespace CourseNoteSharingSystem.Controllers
         }
 
         // GET: Notes/Edit/5
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -183,6 +190,7 @@ namespace CourseNoteSharingSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,FilePath,UploadDate")] Note note)
         {
             if (id != note.Id)
@@ -214,6 +222,7 @@ namespace CourseNoteSharingSystem.Controllers
         }
 
         // GET: Notes/Delete/5
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -234,6 +243,7 @@ namespace CourseNoteSharingSystem.Controllers
         // POST: Notes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var note = await _context.Note.FindAsync(id);
@@ -246,13 +256,14 @@ namespace CourseNoteSharingSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin, User")]
         private bool NoteExists(int id)
         {
             return _context.Note.Any(e => e.Id == id);
         }
 
 
-        
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Download(int id)
         {
             var note = await _context.Note
@@ -318,6 +329,7 @@ namespace CourseNoteSharingSystem.Controllers
 
         [HttpPost]
         [Authorize]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> AddComment(int noteId, string content)
         {
             if (string.IsNullOrWhiteSpace(content))

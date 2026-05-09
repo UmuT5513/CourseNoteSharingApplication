@@ -18,4 +18,5 @@ namespace CourseNoteSharingSystem.ViewModels
 
         public List<Comment> MyComments { get; set; }
     }
+
 }
