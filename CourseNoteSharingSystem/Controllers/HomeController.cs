@@ -101,7 +101,7 @@ namespace CourseNoteSharingSystem.Controllers
                 {
                     var roles = await _userManager.GetRolesAsync(user);
                     if (roles.Contains("Admin"))
-                        return RedirectToAction("AdminDashboard");
+                        return RedirectToAction("Index","AdminDashboard");
                     else
                         return RedirectToAction("UserDashboard");
 
