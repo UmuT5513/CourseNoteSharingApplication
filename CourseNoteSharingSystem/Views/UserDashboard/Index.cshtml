@@ -1,0 +1,127 @@
+﻿@using CourseNoteSharingSystem.ViewModels
+
+@{
+    Layout = "_Layout";
+}
+
+@model UserDashboardViewModel
+
+<h3 class="mb-3">My Notes</h3>
+
+@if (!Model.MyNotes.Any())
+{
+    <div class="alert alert-warning">
+        You have not uploaded any notes yet.
+    </div>
+}
+else
+{
+    <div class="row">
+
+        @foreach (var note in Model.MyNotes)
+        {
+            <div class="col-md-6 mb-4">
+
+                <div class="card shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h4 class="card-title">
+                            @note.Title
+                        </h4>
+
+                        <p class="card-text">
+                            @note.Description
+                        </p>
+
+                        @if (note.Course != null)
+                        {
+                            <p>
+                                <strong>Course:</strong>
+                                @note.Course.CourseName
+                            </p>
+                        }
+
+                        <p>
+                            <strong>Upload Date:</strong>
+                            @note.UploadDate.ToShortDateString()
+                        </p>
+
+                        <p>
+                            <strong>Downloads:</strong>
+                            @note.DownloadCount
+                        </p>
+
+                        <p>
+                            <strong>Status:</strong>
+
+                            @if (note.Status == NoteStatus.Pending)
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    Pending
+                                </span>
+                            }
+                            else if (note.Status == NoteStatus.Approved)
+                            {
+                                <span class="badge bg-success">
+                                    Approved
+                                </span>
+                            }
+                            else if (note.Status == NoteStatus.Rejected)
+                            {
+                                <span class="badge bg-danger">
+                                    Rejected
+                                </span>
+                            }
+                        </p>
+
+                    </div>
+
+                    <div class="card-footer">
+
+                        <a asp-controller="Note"
+                           asp-action="Details"
+                           asp-route-id="@note.Id"
+                           class="btn btn-primary btn-sm">
+
+                            Details
+
+                        </a>
+
+                        <a asp-controller="Note"
+                           asp-action="Download"
+                           asp-route-id="@note.Id"
+                           class="btn btn-success btn-sm">
+
+                            Download
+
+                        </a>
+
+                        <a asp-controller="Note"
+                           asp-action="Edit"
+                           asp-route-id="@note.Id"
+                           class="btn btn-warning btn-sm">
+
+                            Edit
+
+                        </a>
+
+                        <a asp-controller="Note"
+                           asp-action="Delete"
+                           asp-route-id="@note.Id"
+                           class="btn btn-danger btn-sm">
+
+                            Delete
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+}
+
