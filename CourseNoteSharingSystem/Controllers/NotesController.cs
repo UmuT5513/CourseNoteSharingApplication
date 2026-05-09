@@ -82,6 +82,8 @@ namespace CourseNoteSharingSystem.Controllers
             var note = await _context.Note
                 .Include(n => n.Course)
                 .Include(n => n.User)
+                .Include(n => n.Comments)
+                .ThenInclude(c => c.User)
                 .FirstOrDefaultAsync(n => n.Id == id);
             if (note == null)
             {
@@ -310,6 +312,36 @@ namespace CourseNoteSharingSystem.Controllers
             _context.Update(note);
             await _context.SaveChangesAsync();
             return RedirectToAction("PendingNotes");
+        }
+
+
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AddComment(int noteId, string content)
+        {
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                return RedirectToAction("Details",
+                    new { id = noteId });
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            var comment = new Comment
+            {
+                Content = content,
+                CreatedAt = DateTime.Now,
+                NoteId = noteId,
+                UserId = user.Id
+            };
+
+            _context.Comments.Add(comment);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details",
+                new { id = noteId });
         }
     }
 }

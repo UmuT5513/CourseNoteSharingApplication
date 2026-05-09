@@ -27,6 +27,8 @@ namespace CourseNoteSharingSystem.Models
 
         public ICollection<DownloadLog> DownloadLogs { get; set; }
 
+        public ICollection<Comment> Comments { get; set; }
+
 
     }
 

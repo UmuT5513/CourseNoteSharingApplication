@@ -49,3 +49,81 @@
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<hr />
+
+<h3>Comments</h3>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <form asp-action="AddComment"
+          method="post">
+
+        <input type="hidden"
+               name="noteId"
+               value="@Model.Id" />
+
+        <div class="mb-3">
+
+            <textarea name="content"
+                      class="form-control"
+                      placeholder="Write a comment..."
+                      rows="3"></textarea>
+
+        </div>
+
+        <button type="submit"
+                class="btn btn-primary">
+
+            Add Comment
+
+        </button>
+
+    </form>
+}
+else
+{
+    <div class="alert alert-info">
+        Login to write comments.
+    </div>
+}
+
+
+<hr />
+
+@if (!Model.Comments.Any())
+{
+    <div class="alert alert-warning">
+        No comments yet.
+    </div>
+}
+
+@foreach (var comment in Model.Comments
+    .OrderByDescending(c => c.CreatedAt))
+{
+    <div class="card mb-3">
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between">
+
+                <strong>
+                    @comment.User.UserName
+                </strong>
+
+                <small>
+                    @comment.CreatedAt.ToString("g")
+                </small>
+
+            </div>
+
+            <hr />
+
+            <p>
+                @comment.Content
+            </p>
+
+        </div>
+
+    </div>
+}
