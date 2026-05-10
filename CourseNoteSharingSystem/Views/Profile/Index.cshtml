@@ -1,0 +1,98 @@
+@using CourseNoteSharingSystem.ViewModels
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "Profile";
+    var profileName = Model.User.UserName ?? "User";
+    var profileInitial = profileName.Length > 0 ? profileName.Substring(0, 1).ToUpperInvariant() : "U";
+}
+
+<section class="dashboard-hero glass-card">
+    <div class="d-flex align-items-center gap-3">
+        <span class="avatar" style="width:72px;height:72px;font-size:1.8rem;">@profileInitial</span>
+        <div>
+            <span class="eyebrow">Profile</span>
+            <h1>@Model.User.UserName</h1>
+            <p class="text-muted mb-0">@Model.User.Email</p>
+        </div>
+    </div>
+    <button class="btn btn-primary btn-lg" type="button" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="bi bi-pencil me-2"></i>Edit profile</button>
+</section>
+
+<div class="stat-grid">
+    <div class="stat-card"><div class="icon"><i class="bi bi-file-earmark-text"></i></div><span>Uploaded notes</span><strong>@Model.UploadedNotes.Count</strong></div>
+    <div class="stat-card"><div class="icon"><i class="bi bi-download"></i></div><span>Received downloads</span><strong>@Model.TotalDownloads</strong></div>
+    <div class="stat-card"><div class="icon"><i class="bi bi-chat-left-text"></i></div><span>Comments</span><strong>@Model.TotalComments</strong></div>
+    <div class="stat-card"><div class="icon"><i class="bi bi-calendar3"></i></div><span>Birth date</span><strong class="fs-5">@Model.User.birthDate</strong></div>
+</div>
+
+<div class="dashboard-grid">
+    <section class="panel soft-card">
+        <div class="panel-header"><h2 class="h5 fw-bold mb-0">Uploaded notes</h2></div>
+        @if (!Model.UploadedNotes.Any())
+        {
+            <div class="empty-state"><div><i class="bi bi-cloud-arrow-up"></i><p class="mt-3 mb-0">No uploads yet.</p></div></div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead><tr><th>Title</th><th>Course</th><th>Status</th><th>Downloads</th><th></th></tr></thead>
+                    <tbody>
+                        @foreach (var note in Model.UploadedNotes.Take(8))
+                        {
+                            <tr>
+                                <td><strong>@note.Title</strong><div class="text-muted small">@note.UploadDate.ToString("MMM dd, yyyy")</div></td>
+                                <td>@(note.Course?.CourseName ?? "-")</td>
+                                <td><span class="badge text-bg-primary">@note.Status</span></td>
+                                <td>@note.DownloadCount</td>
+                                <td><a asp-controller="Notes" asp-action="Details" asp-route-id="@note.Id" class="btn btn-ghost btn-sm">Open</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+
+    <section class="panel soft-card">
+        <div class="panel-header"><h2 class="h5 fw-bold mb-0">Download history</h2></div>
+        @if (!Model.DownloadHistory.Any())
+        {
+            <div class="empty-state"><div><i class="bi bi-download"></i><p class="mt-3 mb-0">No downloads yet.</p></div></div>
+        }
+        else
+        {
+            @foreach (var log in Model.DownloadHistory)
+            {
+                <div class="activity-item">
+                    <i class="bi bi-download text-primary"></i>
+                    <div>
+                        <strong>@log.Note?.Title</strong>
+                        <p class="text-muted mb-0">@log.DownloadDate.ToString("g")</p>
+                    </div>
+                </div>
+            }
+        }
+    </section>
+</div>
+
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content soft-card">
+            <div class="modal-header border-0">
+                <h2 class="modal-title h5 fw-bold" id="editProfileModalLabel">Edit profile</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label class="form-label fw-semibold">Username</label>
+                <input class="form-control mb-3" value="@Model.User.UserName" disabled />
+                <label class="form-label fw-semibold">Email</label>
+                <input class="form-control mb-3" value="@Model.User.Email" disabled />
+                <p class="text-muted mb-0">Profile editing UI is ready. Add a POST action when account editing rules are finalized.</p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Done</button>
+            </div>
+        </div>
+    </div>
+</div>

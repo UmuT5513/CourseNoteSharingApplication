@@ -1,89 +1,100 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="container py-5">
-    <div class="hero-card text-white p-5 p-md-6 rounded-4 shadow-lg">
-        <div class="row align-items-center g-4">
-            <div class="col-lg-7">
-                <span class="badge rounded-pill text-bg-light text-success px-3 py-2 mb-3">Course Note Sharing System</span>
-                <h1 class="display-4 fw-bold mb-3">Notlarını paylaş, dersleri birlikte büyüt.</h1>
-                <p class="lead mb-4 opacity-75">
-                    Ders notlarını düzenli bir şekilde yükle, keşfet ve arkadaşlarınla paylaş.
-                    Yeşil ve mavi tonların ferah uyumuyla modern bir başlangıç ekranı.
-                </p>
-                <div class="d-flex flex-wrap gap-3">
-                    <a class="btn btn-light btn-lg text-success fw-semibold" asp-controller="Courses" asp-action="Index">Kursları İncele</a>
-                    <a class="btn btn-outline-light btn-lg" asp-controller="Notes" asp-action="Index">Notlara Göz At</a>
+<section class="home-hero">
+    <div class="container">
+        <div class="home-hero-grid">
+            <div>
+                <span class="eyebrow">Course Note Sharing System</span>
+                <h1>Discover, upload and discuss course notes in one focused workspace.</h1>
+                <p>Built for students who need fast access to reliable PDFs, documents, slides and text notes across every course.</p>
+                <form asp-controller="Notes" asp-action="Index" method="get" class="hero-search">
+                    <i class="bi bi-search"></i>
+                    <input name="search" class="form-control" placeholder="Search calculus summaries, lab reports, slides..." />
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+                <div class="hero-actions">
+                    <a class="btn btn-primary btn-lg" asp-controller="Notes" asp-action="Create"><i class="bi bi-cloud-arrow-up me-2"></i>Upload note</a>
+                    <a class="btn btn-ghost btn-lg" asp-controller="Courses" asp-action="Index">Browse courses</a>
                 </div>
             </div>
-            <div class="col-lg-5">
-                <div class="feature-panel p-4 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-25">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="icon-bubble me-3">N</div>
-                        <div>
-                            <h2 class="h5 mb-1">Akıllı Not Deneyimi</h2>
-                            <p class="mb-0 opacity-75">Hızlı erişim, temiz görünüm, modern arayüz.</p>
-                        </div>
+            <div class="hero-preview glass-card">
+                <div class="preview-top">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="note-preview-card">
+                    <div class="note-icon"><i class="bi bi-file-earmark-pdf"></i></div>
+                    <div>
+                        <strong>Data Structures Midterm Notes</strong>
+                        <p>Linked lists, trees, hash tables and solved examples.</p>
                     </div>
-                    <ul class="list-unstyled mb-0 feature-list">
-                        <li>• Ders notlarını kolayca keşfet</li>
-                        <li>• Paylaşım ve erişimi hızlandır</li>
-                        <li>• Yeşil-mavi tema ile ferah tasarım</li>
-                    </ul>
+                </div>
+                <div class="skeleton mt-3" style="height: 16px; width: 86%;"></div>
+                <div class="skeleton mt-2" style="height: 16px; width: 64%;"></div>
+                <div class="mini-chart mt-4">
+                    <span style="height: 38%"></span>
+                    <span style="height: 72%"></span>
+                    <span style="height: 52%"></span>
+                    <span style="height: 90%"></span>
+                    <span style="height: 64%"></span>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<style>
-    .hero-card {
-        background: linear-gradient(135deg, #0f766e 0%, #0ea5e9 55%, #14b8a6 100%);
-        overflow: hidden;
-        position: relative;
-    }
+<section class="container py-5">
+    <div class="row g-3 mb-4">
+        <div class="col-md-4"><div class="stat-card"><span>Total notes</span><strong>1.2k+</strong></div></div>
+        <div class="col-md-4"><div class="stat-card"><span>Downloads</span><strong>18k</strong></div></div>
+        <div class="col-md-4"><div class="stat-card"><span>Courses</span><strong>80+</strong></div></div>
+    </div>
 
-    .hero-card::before {
-        content: "";
-        position: absolute;
-        inset: auto -80px -100px auto;
-        width: 260px;
-        height: 260px;
-        background: rgba(255, 255, 255, 0.12);
-        border-radius: 50%;
-        filter: blur(8px);
-    }
+    <div class="d-flex align-items-end justify-content-between gap-3 mb-3">
+        <div>
+            <span class="eyebrow">Popular courses</span>
+            <h2 class="section-title mb-0">High-signal study spaces</h2>
+        </div>
+        <a asp-controller="Courses" asp-action="Index" class="btn btn-ghost">View all</a>
+    </div>
+    <div class="row g-3">
+        @foreach (var course in new[] { "Software Engineering", "Database Systems", "Operating Systems", "Calculus II" })
+        {
+            <div class="col-md-6 col-xl-3">
+                <article class="soft-card p-4 h-100">
+                    <div class="note-icon mb-3"><i class="bi bi-mortarboard"></i></div>
+                    <h3 class="h5 fw-bold">@course</h3>
+                    <p class="text-muted mb-3">Lecture summaries, solved questions and project references.</p>
+                    <a asp-controller="Courses" asp-action="Index" class="fw-semibold">Open course</a>
+                </article>
+            </div>
+        }
+    </div>
+</section>
 
-    .hero-card::after {
-        content: "";
-        position: absolute;
-        top: -60px;
-        left: -60px;
-        width: 180px;
-        height: 180px;
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 50%;
-    }
+<section class="container pb-5">
+    <div class="glass-card p-4 p-lg-5">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <span class="eyebrow">Latest uploads</span>
+                <h2 class="section-title">Fresh notes are easier to trust when they are organized.</h2>
+                <p class="text-muted mb-0">Use course filters, approval status and comments to find the right material quickly.</p>
+            </div>
+            <div class="col-lg-5">
+                <div class="d-grid gap-3">
+                    <div class="note-preview-card"><span class="file-badge"><i class="bi bi-filetype-pdf"></i>PDF</span><strong>Physics Lab Report</strong></div>
+                    <div class="note-preview-card"><span class="file-badge"><i class="bi bi-filetype-docx"></i>DOCX</span><strong>Algorithm Cheatsheet</strong></div>
+                    <div class="note-preview-card"><span class="file-badge"><i class="bi bi-filetype-pptx"></i>PPTX</span><strong>Cloud Computing Slides</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-    .hero-card > .row {
-        position: relative;
-        z-index: 1;
-    }
-
-    .icon-bubble {
-        width: 56px;
-        height: 56px;
-        border-radius: 16px;
-        display: grid;
-        place-items: center;
-        background: rgba(255, 255, 255, 0.18);
-        font-size: 1.25rem;
-        font-weight: 700;
-    }
-
-    .feature-list li {
-        margin-bottom: 0.5rem;
-        opacity: 0.92;
-    }
-</style>
+<section class="container pb-5">
+    <div class="cta-band">
+        <h2>Ready to make your course notes useful for everyone?</h2>
+        <a asp-controller="Home" asp-action="SignUp" class="btn btn-light btn-lg">Create account</a>
+    </div>
+</section>

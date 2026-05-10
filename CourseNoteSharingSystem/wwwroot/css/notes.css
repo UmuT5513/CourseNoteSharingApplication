@@ -1,0 +1,93 @@
+.notes-header {
+    padding: 28px;
+    margin-bottom: 22px;
+}
+.notes-toolbar {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) 220px 180px auto;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+.note-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+.note-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
+    padding: 20px;
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+.note-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.note-icon {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    color: var(--primary);
+    border-radius: 16px;
+    background: var(--surface-soft);
+}
+.note-card h3 { margin-top: 16px; font-size: 1.12rem; font-weight: 800; }
+.note-description {
+    color: var(--muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.note-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+.file-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: .42rem .7rem;
+    color: var(--primary);
+    background: var(--surface-soft);
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 800;
+}
+.note-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.upload-zone {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 220px;
+    padding: 28px;
+    text-align: center;
+    cursor: pointer;
+    border: 1.5px dashed var(--border);
+    border-radius: 20px;
+    background: var(--surface-soft);
+    transition: border-color .18s ease, background .18s ease;
+}
+.upload-zone:hover, .upload-zone.is-dragover { border-color: var(--primary); background: rgba(37, 99, 235, .08); }
+.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.upload-zone i { font-size: 2.5rem; color: var(--primary); }
+.preview-panel {
+    min-height: 360px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 18px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+}
+.preview-panel iframe { width: 100%; height: 520px; border: 0; }
+.comment-card {
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface-solid);
+}
+
+@media (max-width: 1199.98px) {
+    .note-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .notes-toolbar { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 767.98px) {
+    .note-grid, .notes-toolbar { grid-template-columns: 1fr; }
+}

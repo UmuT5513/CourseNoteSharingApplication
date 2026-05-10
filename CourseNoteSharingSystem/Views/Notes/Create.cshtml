@@ -1,55 +1,68 @@
-﻿@model CourseNoteSharingSystem.Models.NoteUploadViewModel
-
+@model CourseNoteSharingSystem.Models.NoteUploadViewModel
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Upload Note";
 }
 
-<h1>Create</h1>
+<section class="notes-header glass-card">
+    <span class="eyebrow">Upload center</span>
+    <h1 class="section-title mb-2">Share a course note</h1>
+    <p class="text-muted mb-0">Supported formats: PDF, DOC, DOCX, TXT and PPTX. Maximum file size is 50MB.</p>
+</section>
 
-<h4>Note</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="row g-4">
+    <div class="col-lg-7">
+        <form asp-action="Create" method="post" enctype="multipart/form-data" class="soft-card p-4">
+            <div asp-validation-summary="ModelOnly"></div>
 
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+            <label asp-for="Title" class="form-label fw-semibold">Title</label>
+            <input asp-for="Title" class="form-control mb-2" placeholder="Example: Week 6 database normalization notes" />
+            <span asp-validation-for="Title" class="text-danger small"></span>
+
+            <label asp-for="Description" class="form-label fw-semibold mt-3">Description</label>
+            <textarea asp-for="Description" class="form-control mb-2" rows="4" placeholder="Summarize what this file contains."></textarea>
+            <span asp-validation-for="Description" class="text-danger small"></span>
+
+            <label asp-for="CourseId" class="form-label fw-semibold mt-3">Course</label>
+            <select asp-for="CourseId" class="form-select mb-2" asp-items="ViewBag.Courses">
+                <option value="">Select course</option>
+            </select>
+            <span asp-validation-for="CourseId" class="text-danger small"></span>
+
+            <label class="form-label fw-semibold mt-3">File</label>
+            <div class="upload-zone" data-upload-zone>
+                <input asp-for="File" type="file" accept=".pdf,.doc,.docx,.txt,.pptx" data-upload-input />
+                <div>
+                    <i class="bi bi-cloud-arrow-up"></i>
+                    <h2 class="h5 fw-bold mt-3">Drop your file here</h2>
+                    <p class="text-muted mb-0">or click to browse from your device</p>
+                    <p class="fw-semibold mt-3 mb-0" data-file-name>No file selected</p>
+                </div>
+            </div>
+            <span asp-validation-for="File" class="text-danger small"></span>
+            <div class="progress mt-3" style="height: 10px;">
+                <div class="progress-bar" data-upload-progress style="width: 0%"></div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="CourseId" class="control-label">Course</label>
-                <select asp-for="CourseId" class="form-control" asp-items="ViewBag.Courses">
-                    <option value="">-- Select Course --</option>
-                </select>
-                <span asp-validation-for="CourseId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label">File</label>
-                <input asp-for="File" type="file" class="form-control" accept=".pdf,.doc,.docx,.txt,.pptx" />
-                <span asp-validation-for="File" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mt-2">
-                <input type="submit" value="Upload" class="btn btn-primary" />
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-upload me-2"></i>Upload note</button>
+                <a asp-action="Index" class="btn btn-ghost btn-lg">Cancel</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+    <aside class="col-lg-5">
+        <div class="soft-card p-4 h-100">
+            <span class="eyebrow">Review flow</span>
+            <h2 class="h4 fw-bold mt-2">Uploads are sent to approval.</h2>
+            <p class="text-muted">Admins can approve pending notes before students rely on them. Clear titles and descriptions help the approval process.</p>
+            <div class="d-grid gap-3 mt-4">
+                <div class="note-preview-card"><i class="bi bi-check-circle text-primary"></i><span>Use readable file names.</span></div>
+                <div class="note-preview-card"><i class="bi bi-check-circle text-primary"></i><span>Describe course week or topic.</span></div>
+                <div class="note-preview-card"><i class="bi bi-check-circle text-primary"></i><span>Avoid duplicate uploads.</span></div>
+            </div>
+        </div>
+    </aside>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
 }

@@ -1,45 +1,87 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-    Layout = "_Layout";
-}
 @model SignUpModel
+@{
+    ViewData["Title"] = "Sign Up";
+}
 
-<form asp-action="SignUp" method="post">
-    <div class="form-group">
-        <label asp-for="UserName"></label>
-        <input asp-for="UserName" class="form-control" />
-        <span asp-validation-for="UserName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="birthDate"></label>
-        <input asp-for="birthDate" class="form-control" />
-        <span asp-validation-for="birthDate" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="ConfirmPassword"></label>
-        <input asp-for="ConfirmPassword" class="form-control" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-    </div>
-
-    
-    <div class="form-group">
-        <div class="checkbox">
-            <label asp-for="isAdmin">Admin yetkisi ver</label>
-            <input type="checkbox" asp-for="isAdmin" />
+<div class="container py-4">
+    <section class="auth-shell">
+        <div class="auth-visual">
+            <div class="auth-visual-content">
+                <span class="eyebrow text-white">Join CourseNotes</span>
+                <h1 class="mt-3">Build a smarter course library with your class.</h1>
+                <p class="mt-3">Upload lecture notes, discover approved material and keep discussions attached to each document.</p>
+            </div>
+            <div class="auth-metric-row">
+                <div class="auth-metric"><strong>DOCX</strong><span>Supported</span></div>
+                <div class="auth-metric"><strong>PPTX</strong><span>Supported</span></div>
+                <div class="auth-metric"><strong>TXT</strong><span>Supported</span></div>
+            </div>
         </div>
-    </div>
-    
-    <button type="submit" class="btn btn-primary">Sign Up</button>
-</form>
+
+        <div class="auth-card glass-card">
+            <span class="eyebrow">Create account</span>
+            <h2 class="mt-2 mb-2">Start sharing</h2>
+            <p class="text-muted mb-4">Your account gives you upload, download and comment access.</p>
+
+            <form asp-action="SignUp" method="post" novalidate>
+                <div asp-validation-summary="All"></div>
+
+                <label asp-for="UserName" class="form-label fw-semibold">Username</label>
+                <div class="floating-field">
+                    <i class="bi bi-person"></i>
+                    <input asp-for="UserName" class="form-control" placeholder="batuhan" autocomplete="username" />
+                </div>
+                <span asp-validation-for="UserName" class="text-danger small"></span>
+
+                <label asp-for="Email" class="form-label fw-semibold mt-3">Email</label>
+                <div class="floating-field">
+                    <i class="bi bi-envelope"></i>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="name@example.com" autocomplete="email" />
+                </div>
+                <span asp-validation-for="Email" class="text-danger small"></span>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="Password" class="form-label fw-semibold">Password</label>
+                        <div class="floating-field">
+                            <i class="bi bi-lock"></i>
+                            <input asp-for="Password" type="password" class="form-control pe-5" autocomplete="new-password" />
+                            <button class="password-toggle" type="button" data-password-toggle aria-label="Show password"><i class="bi bi-eye"></i></button>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="ConfirmPassword" class="form-label fw-semibold">Confirm</label>
+                        <div class="floating-field">
+                            <i class="bi bi-shield-check"></i>
+                            <input asp-for="ConfirmPassword" type="password" class="form-control pe-5" autocomplete="new-password" />
+                            <button class="password-toggle" type="button" data-password-toggle aria-label="Show password"><i class="bi bi-eye"></i></button>
+                        </div>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <label asp-for="birthDate" class="form-label fw-semibold">Birth date</label>
+                <div class="floating-field">
+                    <i class="bi bi-calendar3"></i>
+                    <input asp-for="birthDate" type="date" class="form-control" />
+                </div>
+                <span asp-validation-for="birthDate" class="text-danger small"></span>
+
+                <div class="form-check form-switch my-4">
+                    <input class="form-check-input" type="checkbox" asp-for="isAdmin" />
+                    <label class="form-check-label" asp-for="isAdmin">Request admin workspace</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 btn-lg">Create account</button>
+                <p class="text-center text-muted mt-4 mb-0">
+                    Already registered? <a asp-action="SignIn" asp-controller="Home" class="fw-semibold">Sign in</a>
+                </p>
+            </form>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

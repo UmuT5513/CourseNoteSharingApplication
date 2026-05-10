@@ -189,6 +189,16 @@ namespace CourseNoteSharingSystem.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        public IActionResult HttpStatus(int code)
+        {
+            if (code == 404)
+            {
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
+
+            return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
         public async Task<IActionResult> DontYouHaveAnAccount()
         {
             return RedirectToAction("SignUp");

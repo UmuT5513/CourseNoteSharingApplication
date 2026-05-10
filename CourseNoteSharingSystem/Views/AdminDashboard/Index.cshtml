@@ -1,89 +1,85 @@
-﻿@model AdminDashboardViewModel
+@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
 
-<div class="container-fluid mt-4">
-    <div class="d-flex justify-content-between align-items-center">
-        <h2>Yönetim Paneli</h2>
-        <span class="badge bg-dark">Sistem Özeti</span>
-    </div>
-    <hr />
-
-    <div class="row">
-        <!-- Kullanıcı Kartı -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2 bg-primary text-white">
-                <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Toplam Kullanıcı</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.TotalUsers</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Rol Kartı -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2 bg-success text-white">
-                <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Toplam Rol</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.TotalRoles</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Kurs Kartı -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2 bg-info text-white">
-                <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Toplam Kurs</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.TotalCourses</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Not Kartı -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-danger shadow h-100 py-2 bg-danger text-white">
-                <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Toplam Not</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.TotalNotes</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Son Kullanıcılar Listesi -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3 bg-light">
-            <h6 class="m-0 font-weight-bold text-primary">Son Kayıt Olanlar</h6>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>E-Posta</th>
-                            <th>Kullanıcı Adı</th>
-                            <th>Durum</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var user in Model.RecentUsers)
-                        {
-                            <tr>
-                                <td>@user.Email</td>
-                                <td>@user.UserName</td>
-                                <td><span class="badge bg-success">Aktif</span></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
+<section class="dashboard-hero glass-card">
     <div>
-        <a asp-action="Users" asp-controller="AdminDashboard" class="btn btn-primary">List Users</a>
-        <a asp-action="Roles" asp-controller="AdminDashboard" class="btn btn-secondary">List Roles</a>
-        <a asp-action="Courses" asp-controller="AdminDashboard" class="btn btn-success">List Courses</a>
-        <a asp-action="Notes" asp-controller="AdminDashboard" class="btn btn-info">All Notes</a>
-        <a asp-action="PendingNotes" asp-controller="AdminDashboard" class="btn btn-info">Pending Notes</a>
+        <span class="eyebrow">Admin dashboard</span>
+        <h1>System overview</h1>
+        <p class="text-muted mb-0">Manage users, roles, courses and pending note approvals from one workspace.</p>
     </div>
+    <a asp-action="PendingNotes" asp-controller="AdminDashboard" class="btn btn-primary btn-lg"><i class="bi bi-hourglass-split me-2"></i>Review pending</a>
+</section>
+
+<div class="stat-grid">
+    <div class="stat-card"><div class="icon"><i class="bi bi-people"></i></div><span>Total users</span><strong>@Model.TotalUsers</strong></div>
+    <div class="stat-card"><div class="icon"><i class="bi bi-shield-lock"></i></div><span>Total roles</span><strong>@Model.TotalRoles</strong></div>
+    <div class="stat-card"><div class="icon"><i class="bi bi-mortarboard"></i></div><span>Total courses</span><strong>@Model.TotalCourses</strong></div>
+    <div class="stat-card"><div class="icon"><i class="bi bi-file-earmark-text"></i></div><span>Total notes</span><strong>@Model.TotalNotes</strong></div>
+</div>
+
+<div class="dashboard-grid">
+    <section class="panel soft-card">
+        <div class="panel-header">
+            <h2 class="h5 fw-bold mb-0">User management</h2>
+            <a asp-action="Users" asp-controller="AdminDashboard" class="btn btn-ghost btn-sm">All users</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead><tr><th>Email</th><th>Username</th><th>Status</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var user in Model.RecentUsers)
+                    {
+                        <tr>
+                            <td>@user.Email</td>
+                            <td><strong>@user.UserName</strong></td>
+                            <td><span class="badge text-bg-success">Active</span></td>
+                            <td><a asp-action="UpdateUser" asp-route-id="@user.Id" class="btn btn-ghost btn-sm">Edit</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <aside class="d-grid gap-3">
+        <section class="panel soft-card">
+            <div class="panel-header"><h2 class="h5 fw-bold mb-0">System chart</h2></div>
+            <div class="mini-chart">
+                <span style="height: 88%"></span><span style="height: 42%"></span><span style="height: 65%"></span><span style="height: 76%"></span><span style="height: 54%"></span>
+            </div>
+        </section>
+        <section class="panel soft-card">
+            <div class="panel-header"><h2 class="h5 fw-bold mb-0">Admin tools</h2></div>
+            <div class="quick-actions">
+                <a class="quick-action" asp-action="Users"><i class="bi bi-people d-block mb-2"></i>Users</a>
+                <a class="quick-action" asp-action="Roles"><i class="bi bi-shield d-block mb-2"></i>Roles</a>
+                <a class="quick-action" asp-action="Courses"><i class="bi bi-collection d-block mb-2"></i>Courses</a>
+                <a class="quick-action" asp-action="Notes"><i class="bi bi-file-text d-block mb-2"></i>Notes</a>
+            </div>
+        </section>
+    </aside>
+</div>
+
+<div class="dashboard-grid mt-3">
+    <section class="panel soft-card">
+        <div class="panel-header">
+            <h2 class="h5 fw-bold mb-0">Pending notes approval</h2>
+            <a asp-controller="Notes" asp-action="PendingNotes" class="btn btn-primary btn-sm">Open queue</a>
+        </div>
+        <div class="empty-state">
+            <div>
+                <i class="bi bi-hourglass-split"></i>
+                <h3 class="h5 mt-3">Approval queue</h3>
+                <p class="mb-0">Use the pending notes panel to approve new submissions.</p>
+            </div>
+        </div>
+    </section>
+    <section class="panel soft-card">
+        <div class="panel-header"><h2 class="h5 fw-bold mb-0">Recent activities</h2></div>
+        <div class="activity-item"><i class="bi bi-person-plus text-primary"></i><div><strong>New student account</strong><p class="text-muted mb-0">Recent registrations are listed in the user table.</p></div></div>
+        <div class="activity-item"><i class="bi bi-file-check text-primary"></i><div><strong>Notes require review</strong><p class="text-muted mb-0">Pending uploads should be checked before approval.</p></div></div>
+        <div class="activity-item"><i class="bi bi-shield-check text-primary"></i><div><strong>Role management</strong><p class="text-muted mb-0">Admin and User roles are available.</p></div></div>
+    </section>
 </div>

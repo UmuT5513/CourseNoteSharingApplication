@@ -65,6 +65,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStatusCodePagesWithReExecute("/Home/HttpStatus", "?code={0}");
 app.UseRouting();
 
 app.UseAuthentication();
@@ -77,5 +78,40 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=SignIn}/{id?}")
     .WithStaticAssets();
 
+// Seed admin user
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+    
+    // Create Admin role if it doesn't exist
+    if (!await roleManager.RoleExistsAsync("Admin"))
+    {
+        await roleManager.CreateAsync(new Role { Name = "Admin", isUpdated = false });
+    }
+    
+    // Create User role if it doesn't exist
+    if (!await roleManager.RoleExistsAsync("User"))
+    {
+        await roleManager.CreateAsync(new Role { Name = "User", isUpdated = false });
+    }
+    
+    // Create default admin user
+    var adminUser = await userManager.FindByNameAsync("admin");
+    if (adminUser == null)
+    {
+        adminUser = new User
+        {
+            UserName = "admin",
+            Email = "admin@admin.com",
+            birthDate = new DateTime(1990, 1, 1)
+        };
+        var result = await userManager.CreateAsync(adminUser, "admin123");
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(adminUser, "Admin");
+        }
+    }
+}
 
 app.Run();

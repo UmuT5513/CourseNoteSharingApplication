@@ -1,240 +1,110 @@
-﻿@using CourseNoteSharingSystem.ViewModels
-
+@using CourseNoteSharingSystem.ViewModels
+@model UserDashboardViewModel
 @{
-    Layout = "_Layout";
+    ViewData["Title"] = "User Dashboard";
 }
 
-@model UserDashboardViewModel
-
-
-<div class="container-fluid mt-4">
-    <div class="d-flex justify-content-between align-items-center">
-        <h2>Management Panel</h2>
-        <span class="badge bg-dark">User Summary</span>
+<section class="dashboard-hero glass-card">
+    <div>
+        <span class="eyebrow">Student dashboard</span>
+        <h1>Welcome back, @User.Identity?.Name</h1>
+        <p class="text-muted mb-0">Track your uploads, downloads, comments and approval progress.</p>
     </div>
-    <hr />
+    <a asp-controller="Notes" asp-action="Create" class="btn btn-primary btn-lg"><i class="bi bi-cloud-arrow-up me-2"></i>Upload note</a>
+</section>
 
-    <div class="row">
-        <!-- Kullanıcı Kartı -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2 bg-primary text-white">
-                <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Total Notes</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.TotalNotes</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Rol Kartı -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2 bg-success text-white">
-                <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Total Downloads</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.TotalDownloads</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Kurs Kartı -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2 bg-info text-white">
-                <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">TotalComments</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.TotalComments</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Not Kartı -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-danger shadow h-100 py-2 bg-danger text-white">
-                <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Approved Notes</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.ApprovedNotes</div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="stat-grid">
+    <div class="stat-card"><div class="icon"><i class="bi bi-file-earmark-text"></i></div><span>Total notes</span><strong>@Model.TotalNotes</strong></div>
+    <div class="stat-card"><div class="icon"><i class="bi bi-download"></i></div><span>Total downloads</span><strong>@Model.TotalDownloads</strong></div>
+    <div class="stat-card"><div class="icon"><i class="bi bi-chat-left-text"></i></div><span>Comments</span><strong>@Model.TotalComments</strong></div>
+    <div class="stat-card"><div class="icon"><i class="bi bi-check-circle"></i></div><span>Approved notes</span><strong>@Model.ApprovedNotes</strong></div>
 </div>
 
-
-
-<h3 class="mb-3">My Notes</h3>
-
-@if (!Model.MyNotes.Any())
-{
-    <div class="alert alert-warning">
-        You have not uploaded any notes yet.
-    </div>
-}
-else
-{
-    <div class="row">
-
-        @foreach (var note in Model.MyNotes)
+<div class="dashboard-grid">
+    <section class="panel soft-card">
+        <div class="panel-header">
+            <h2 class="h5 fw-bold mb-0">Recent uploads</h2>
+            <a asp-controller="Notes" asp-action="Create" class="btn btn-ghost btn-sm">New upload</a>
+        </div>
+        @if (!Model.MyNotes.Any())
         {
-            <div class="col-md-6 mb-4">
-
-                <div class="card shadow-sm h-100">
-
-                    <div class="card-body">
-
-                        <h4 class="card-title">
-                            @note.Title
-                        </h4>
-
-                        <p class="card-text">
-                            @note.Description
-                        </p>
-
-                        @if (note.Course != null)
+            <div class="empty-state"><div><i class="bi bi-cloud-arrow-up"></i><p class="mt-3 mb-0">You have not uploaded any notes yet.</p></div></div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead><tr><th>Note</th><th>Course</th><th>Status</th><th>Downloads</th><th></th></tr></thead>
+                    <tbody>
+                        @foreach (var note in Model.MyNotes.OrderByDescending(n => n.UploadDate).Take(8))
                         {
-                            <p>
-                                <strong>Course:</strong>
-                                @note.Course.CourseName
-                            </p>
+                            <tr>
+                                <td><strong>@note.Title</strong><div class="text-muted small">@note.UploadDate.ToString("MMM dd, yyyy")</div></td>
+                                <td>@(note.Course?.CourseName ?? "-")</td>
+                                <td><span class="badge @(note.Status == NoteStatus.Approved ? "text-bg-success" : note.Status == NoteStatus.Pending ? "text-bg-warning" : "text-bg-danger")">@note.Status</span></td>
+                                <td>@note.DownloadCount</td>
+                                <td><a asp-controller="Notes" asp-action="Details" asp-route-id="@note.Id" class="btn btn-ghost btn-sm">Open</a></td>
+                            </tr>
                         }
-
-                        <p>
-                            <strong>Upload Date:</strong>
-                            @note.UploadDate.ToShortDateString()
-                        </p>
-
-                        <p>
-                            <strong>Downloads:</strong>
-                            @note.DownloadCount
-                        </p>
-
-                        <p>
-                            <strong>Status:</strong>
-
-                            @if (note.Status == NoteStatus.Pending)
-                            {
-                                <span class="badge bg-warning text-dark">
-                                    Pending
-                                </span>
-                            }
-                            else if (note.Status == NoteStatus.Approved)
-                            {
-                                <span class="badge bg-success">
-                                    Approved
-                                </span>
-                            }
-                            else if (note.Status == NoteStatus.Rejected)
-                            {
-                                <span class="badge bg-danger">
-                                    Rejected
-                                </span>
-                            }
-                        </p>
-
-                    </div>
-
-                    <div class="card-footer">
-
-                        <a asp-controller="Notes"
-                           asp-action="Details"
-                           asp-route-id="@note.Id"
-                           class="btn btn-primary btn-sm">
-
-                            Details
-
-                        </a>
-
-                        <a asp-controller="Notes"
-                           asp-action="Download"
-                           asp-route-id="@note.Id"
-                           class="btn btn-success btn-sm">
-
-                            Download
-
-                        </a>
-
-                        <a asp-controller="Notes"
-                           asp-action="Edit"
-                           asp-route-id="@note.Id"
-                           class="btn btn-warning btn-sm">
-
-                            Edit
-
-                        </a>
-
-                        <a asp-controller="Notes"
-                           asp-action="Delete"
-                           asp-route-id="@note.Id"
-                           class="btn btn-danger btn-sm">
-
-                            Delete
-
-                        </a>
-
-                    </div>
-
-                </div>
-
+                    </tbody>
+                </table>
             </div>
         }
+    </section>
 
-    </div>
-}
+    <aside class="d-grid gap-3">
+        <section class="panel soft-card">
+            <div class="panel-header"><h2 class="h5 fw-bold mb-0">Activity chart</h2></div>
+            <div class="mini-chart">
+                <span style="height: 55%"></span><span style="height: 35%"></span><span style="height: 80%"></span><span style="height: 62%"></span><span style="height: 92%"></span>
+            </div>
+        </section>
+        <section class="panel soft-card">
+            <div class="panel-header"><h2 class="h5 fw-bold mb-0">Quick actions</h2></div>
+            <div class="quick-actions">
+                <a class="quick-action" asp-controller="Notes" asp-action="Create"><i class="bi bi-upload d-block mb-2"></i>Upload</a>
+                <a class="quick-action" asp-controller="Courses" asp-action="Index"><i class="bi bi-search d-block mb-2"></i>Find course</a>
+                <a class="quick-action" asp-controller="Notes" asp-action="Index"><i class="bi bi-collection d-block mb-2"></i>Browse</a>
+                <a class="quick-action" asp-controller="Profile" asp-action="Index"><i class="bi bi-person d-block mb-2"></i>Profile</a>
+            </div>
+        </section>
+    </aside>
+</div>
 
-<h3 class="mb-3 mt-5">My Comments</h3>
-
-@if (!Model.MyComments.Any())
-{
-    <div class="alert alert-warning">
-        You have not written any comments yet.
-    </div>
-}
-else
-{
-    <div class="row">
-
-        @foreach (var comment in Model.MyComments)
+<div class="dashboard-grid mt-3">
+    <section class="panel soft-card">
+        <div class="panel-header"><h2 class="h5 fw-bold mb-0">Recent comments</h2></div>
+        @if (!Model.MyComments.Any())
         {
-            <div class="col-md-12 mb-3">
-
-                <div class="card shadow-sm">
-
-                    <div class="card-body">
-
-                        <div class="d-flex justify-content-between">
-
-                            <h5>
-                                @comment.Note.Title
-                            </h5>
-
-                            <small class="text-muted">
-                                @comment.CreatedAt.ToString("g")
-                            </small>
-
-                        </div>
-
-                        <hr />
-
-                        <p>
-                            @comment.Content
-                        </p>
-
-                    </div>
-
-                    <div class="card-footer">
-
-                        <a asp-controller="Notes"
-                           asp-action="Details"
-                           asp-route-id="@comment.NoteId"
-                           class="btn btn-primary btn-sm">
-
-                            Go To Note
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
+            <div class="empty-state"><div><i class="bi bi-chat"></i><p class="mt-3 mb-0">No comments yet.</p></div></div>
         }
-
-    </div>
-}
+        else
+        {
+            @foreach (var comment in Model.MyComments)
+            {
+                <div class="activity-item">
+                    <i class="bi bi-chat-left-text text-primary"></i>
+                    <div><strong>@comment.Note?.Title</strong><p class="text-muted mb-0">@comment.Content</p></div>
+                    <small class="text-muted ms-auto">@comment.CreatedAt.ToString("g")</small>
+                </div>
+            }
+        }
+    </section>
+    <section class="panel soft-card">
+        <div class="panel-header"><h2 class="h5 fw-bold mb-0">Recent downloads</h2></div>
+        @if (!Model.RecentDownloads.Any())
+        {
+            <div class="empty-state"><div><i class="bi bi-download"></i><p class="mt-3 mb-0">No downloads yet.</p></div></div>
+        }
+        else
+        {
+            @foreach (var item in Model.RecentDownloads)
+            {
+                <div class="activity-item">
+                    <i class="bi bi-download text-primary"></i>
+                    <div><strong>@item.Note?.Title</strong><p class="text-muted mb-0">@item.DownloadDate.ToString("g")</p></div>
+                </div>
+            }
+        }
+    </section>
+</div>

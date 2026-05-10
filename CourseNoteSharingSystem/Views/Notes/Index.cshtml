@@ -1,148 +1,78 @@
-﻿@model IEnumerable<CourseNoteSharingSystem.Models.Note>
-
+@model IEnumerable<CourseNoteSharingSystem.Models.Note>
 @{
     ViewData["Title"] = "Notes";
 }
 
-<h1 class="mb-4">Course Notes</h1>
-
-<div class="mb-3">
-    <a asp-action="Create" class="btn btn-primary">
-        Upload New Note
-    </a>
-</div>
-
-<form method="get" class="mb-4">
-
-    <div class="row">
-
-        <div class="col-md-4">
-            <input type="text"
-                   name="search"
-                   value="@Context.Request.Query["search"]"
-                   class="form-control"
-                   placeholder="Search by title..." />
+<section class="notes-header glass-card">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div>
+            <span class="eyebrow">Notes library</span>
+            <h1 class="section-title mb-2">Course notes</h1>
+            <p class="text-muted mb-0">Search, filter and download shared materials across courses.</p>
         </div>
-
-        <div class="col-md-3">
-            <select name="sortOrder" class="form-control">
-
-                <option value="">
-                    Newest
-                </option>
-
-                <option value="downloads">
-                    Most Downloaded
-                </option>
-
-            </select>
-        </div>
-
-        <div class="col-md-2">
-            <button type="submit"
-                    class="btn btn-success w-100">
-
-                Search
-
-            </button>
-        </div>
-
+        <a asp-action="Create" class="btn btn-primary btn-lg"><i class="bi bi-cloud-arrow-up me-2"></i>Upload note</a>
     </div>
+</section>
 
+<form method="get" class="notes-toolbar">
+    <div class="input-group">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input type="search" name="search" value="@Context.Request.Query["search"]" class="form-control" placeholder="Search by title or description" data-filter-input />
+    </div>
+    <select name="courseId" class="form-select" asp-items="ViewBag.Courses">
+        <option value="">All courses</option>
+    </select>
+    <select name="sortOrder" class="form-select">
+        <option value="">Newest</option>
+        <option value="downloads">Most downloaded</option>
+        <option value="oldest">Oldest</option>
+    </select>
+    <button type="submit" class="btn btn-primary"><i class="bi bi-funnel me-2"></i>Apply</button>
 </form>
 
 @if (!Model.Any())
 {
-    <div class="alert alert-warning">
-        No notes found.
+    <div class="empty-state">
+        <div>
+            <i class="bi bi-file-earmark-text"></i>
+            <h2 class="h4 mt-3">No notes found</h2>
+            <p class="mb-0">Try another search term or upload the first note for this course.</p>
+        </div>
     </div>
 }
-
-<div class="row">
-
-    @foreach (var item in Model)
-    {
-        <div class="col-md-6 mb-4">
-
-            <div class="card shadow-sm h-100">
-
-                <div class="card-body">
-
-                    <h4 class="card-title">
-                        @item.Title
-                    </h4>
-
-                    <p class="card-text">
-                        @item.Description
-                    </p>
-
-                    <p>
-                        <strong>Upload Date:</strong>
-                        @item.UploadDate.ToShortDateString()
-                    </p>
-
-                    <p>
-                        <strong>Downloads:</strong>
-                        @item.DownloadCount
-                    </p>
-
+else
+{
+    <div class="note-grid">
+        @foreach (var item in Model)
+        {
+            var ext = (System.IO.Path.GetExtension(item.FilePath ?? "") ?? ".file").Trim('.').ToUpperInvariant();
+            <article class="note-card soft-card" data-filter-item>
+                <div class="d-flex align-items-start justify-content-between gap-3">
+                    <div class="note-icon"><i class="bi bi-file-earmark-text"></i></div>
+                    <span class="file-badge"><i class="bi bi-filetype-@ext.ToLowerInvariant()"></i>@ext</span>
+                </div>
+                <h3>@item.Title</h3>
+                <p class="note-description">@item.Description</p>
+                <div class="note-meta">
+                    <span class="badge text-bg-primary">@item.Status</span>
+                    <span class="badge text-bg-light text-dark"><i class="bi bi-download me-1"></i>@item.DownloadCount</span>
                     @if (item.Course != null)
                     {
-                        <p>
-                            <strong>Course:</strong>
-                            @item.Course.CourseName
-                        </p>
+                        <span class="badge text-bg-light text-dark">@item.Course.CourseName</span>
                     }
-
-                    @if (item.User != null)
-                    {
-                        <p>
-                            <strong>Uploaded By:</strong>
-                            @item.User.UserName
-                        </p>
-                    }
-
                 </div>
-
-                <div class="card-footer">
-
-                    <a asp-action="Details"
-                       asp-route-id="@item.Id"
-                       class="btn btn-primary btn-sm">
-
-                        Details
-
-                    </a>
-
-                    <a asp-action="Download"
-                       asp-route-id="@item.Id"
-                       class="btn btn-success btn-sm">
-
-                        Download
-
-                    </a>
-
-                    <a asp-action="Edit"
-                       asp-route-id="@item.Id"
-                       class="btn btn-warning btn-sm">
-
-                        Edit
-
-                    </a>
-
-                    <a asp-action="Delete"
-                       asp-route-id="@item.Id"
-                       class="btn btn-danger btn-sm">
-
-                        Delete
-
-                    </a>
-
+                <div class="text-muted small mt-3">
+                    <i class="bi bi-person me-1"></i>@(item.User?.UserName ?? "Unknown")
+                    <span class="mx-2">·</span>
+                    <i class="bi bi-calendar3 me-1"></i>@item.UploadDate.ToString("MMM dd, yyyy")
                 </div>
-
-            </div>
-
-        </div>
-    }
-
-</div>
+                <div class="note-actions">
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm"><i class="bi bi-eye me-1"></i>Details</a>
+                    <a asp-action="Download" asp-route-id="@item.Id" class="btn btn-ghost btn-sm"><i class="bi bi-download me-1"></i>Download</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-ghost btn-sm"><i class="bi bi-pencil me-1"></i>Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash me-1"></i>Delete</a>
+                </div>
+            </article>
+        }
+    </div>
+}

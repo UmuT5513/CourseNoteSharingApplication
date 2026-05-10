@@ -1,0 +1,86 @@
+.auth-shell {
+    min-height: calc(100vh - 160px);
+    display: grid;
+    grid-template-columns: minmax(0, .95fr) minmax(360px, .72fr);
+    gap: 24px;
+    align-items: stretch;
+}
+.auth-visual {
+    position: relative;
+    overflow: hidden;
+    min-height: 560px;
+    padding: 42px;
+    color: #fff;
+    border-radius: 24px;
+    background:
+        linear-gradient(135deg, rgba(37, 99, 235, .94), rgba(30, 41, 59, .92)),
+        url("https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=1400&q=80") center/cover;
+    box-shadow: var(--shadow);
+}
+.auth-visual-content {
+    position: relative;
+    z-index: 1;
+    max-width: 620px;
+}
+.auth-visual h1 { font-weight: 800; font-size: clamp(2.2rem, 5vw, 4.8rem); letter-spacing: 0; }
+.auth-visual p { color: rgba(255,255,255,.78); font-size: 1.05rem; }
+.auth-metric-row {
+    position: absolute;
+    left: 42px;
+    right: 42px;
+    bottom: 42px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+.auth-metric {
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,.24);
+    border-radius: 18px;
+    background: rgba(255,255,255,.12);
+    backdrop-filter: blur(14px);
+}
+.auth-metric strong { display: block; font-size: 1.45rem; }
+.auth-card {
+    align-self: center;
+    padding: 32px;
+}
+.auth-card h2 { font-weight: 800; }
+.floating-field { position: relative; margin-bottom: 16px; }
+.floating-field .form-control { padding-left: 44px; }
+.floating-field i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    color: var(--muted);
+    transform: translateY(-50%);
+    z-index: 2;
+}
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    z-index: 3;
+}
+.validation-summary-errors {
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    color: #991b1b;
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 14px;
+}
+.validation-summary-valid { display: none; }
+
+@media (max-width: 991.98px) {
+    .auth-shell { grid-template-columns: 1fr; }
+    .auth-visual { min-height: 380px; }
+}
+@media (max-width: 575.98px) {
+    .auth-visual, .auth-card { border-radius: 18px; padding: 24px; }
+    .auth-metric-row { position: static; grid-template-columns: 1fr; margin-top: 28px; }
+}

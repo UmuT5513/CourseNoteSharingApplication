@@ -1,0 +1,32 @@
+@{
+    var isSignedIn = User.Identity?.IsAuthenticated == true;
+}
+@if (isSignedIn)
+{
+    <aside class="app-sidebar" data-sidebar>
+        <div class="sidebar-section">
+            <span class="sidebar-label">Workspace</span>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="sidebar-link" asp-controller="AdminDashboard" asp-action="Index"><i class="bi bi-speedometer2"></i><span>Overview</span></a>
+                <a class="sidebar-link" asp-controller="AdminDashboard" asp-action="Users"><i class="bi bi-people"></i><span>Users</span></a>
+                <a class="sidebar-link" asp-controller="AdminDashboard" asp-action="Roles"><i class="bi bi-shield-lock"></i><span>Roles</span></a>
+                <a class="sidebar-link" asp-controller="AdminDashboard" asp-action="Courses"><i class="bi bi-collection"></i><span>Courses</span></a>
+                <a class="sidebar-link" asp-controller="AdminDashboard" asp-action="PendingNotes"><i class="bi bi-hourglass-split"></i><span>Pending Notes</span></a>
+            }
+            else
+            {
+                <a class="sidebar-link" asp-controller="UserDashboard" asp-action="Index"><i class="bi bi-grid"></i><span>Dashboard</span></a>
+                <a class="sidebar-link" asp-controller="Notes" asp-action="Create"><i class="bi bi-cloud-arrow-up"></i><span>Upload Note</span></a>
+                <a class="sidebar-link" asp-controller="Courses" asp-action="Index"><i class="bi bi-mortarboard"></i><span>Courses</span></a>
+                <a class="sidebar-link" asp-controller="Profile" asp-action="Index"><i class="bi bi-person"></i><span>Profile</span></a>
+            }
+            <a class="sidebar-link" asp-controller="Notes" asp-action="Index"><i class="bi bi-file-earmark-text"></i><span>All Notes</span></a>
+        </div>
+        <div class="sidebar-card">
+            <span class="badge text-bg-primary">Tip</span>
+            <p>PDF, DOCX, TXT and PPTX files are supported up to 50MB.</p>
+        </div>
+    </aside>
+    <div class="sidebar-backdrop" data-sidebar-toggle></div>
+}
