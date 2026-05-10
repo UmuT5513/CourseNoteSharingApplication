@@ -1,0 +1,96 @@
+@model AdminDashboardViewModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container page-container">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+            <h1 class="section-title mb-1"><i class="bi bi-speedometer2 me-2 text-gradient"></i>Yönetim Paneli</h1>
+            <div class="divider"></div>
+        </div>
+        <span class="badge-premium" style="background:var(--gradient-main);color:#fff;padding:0.5rem 1rem;font-size:0.85rem;">
+            <i class="bi bi-gear me-1"></i> Sistem Özeti
+        </span>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="stat-card stat-purple">
+                <i class="bi bi-people stat-icon"></i>
+                <div class="stat-label">Toplam Kullanıcı</div>
+                <div class="stat-value">@Model.TotalUsers</div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="stat-card stat-green">
+                <i class="bi bi-shield-check stat-icon"></i>
+                <div class="stat-label">Toplam Rol</div>
+                <div class="stat-value">@Model.TotalRoles</div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="stat-card stat-blue">
+                <i class="bi bi-book stat-icon"></i>
+                <div class="stat-label">Toplam Kurs</div>
+                <div class="stat-value">@Model.TotalCourses</div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="stat-card stat-orange">
+                <i class="bi bi-file-earmark-text stat-icon"></i>
+                <div class="stat-label">Toplam Not</div>
+                <div class="stat-value">@Model.TotalNotes</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Users -->
+    <div class="card-premium mb-4">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3"><i class="bi bi-clock-history me-2" style="color:var(--primary);"></i>Son Kayıt Olanlar</h5>
+            <div class="table-premium">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>E-Posta</th>
+                            <th>Kullanıcı Adı</th>
+                            <th>Durum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.RecentUsers)
+                        {
+                            <tr>
+                                <td>@user.Email</td>
+                                <td><strong>@user.UserName</strong></td>
+                                <td><span class="badge-premium badge-active">Aktif</span></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="d-flex flex-wrap gap-2">
+        <a asp-action="Users" asp-controller="AdminDashboard" class="btn btn-gradient">
+            <i class="bi bi-people me-1"></i> List Users
+        </a>
+        <a asp-action="Roles" asp-controller="AdminDashboard" class="btn btn-success-premium">
+            <i class="bi bi-shield me-1"></i> List Roles
+        </a>
+        <a asp-action="Courses" asp-controller="AdminDashboard" class="btn btn-accent" style="border-radius:var(--radius-sm);">
+            <i class="bi bi-book me-1"></i> List Courses
+        </a>
+        <a asp-action="Notes" asp-controller="AdminDashboard" class="btn btn-outline-premium">
+            <i class="bi bi-file-earmark me-1"></i> All Notes
+        </a>
+        <a asp-action="PendingNotes" asp-controller="AdminDashboard" class="btn btn-warning-premium">
+            <i class="bi bi-hourglass me-1"></i> Pending Notes
+        </a>
+    </div>
+</div>

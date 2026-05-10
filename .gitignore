@@ -1,0 +1,68 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+out/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+
+# Rider / ReSharper
+.idea/
+_ReSharper*/
+*.DotSettings.user
+
+# Test results
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+
+# Logs
+*.log
+logs/
+
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+# ASP.NET Core / local settings
+appsettings.Development.json
+Properties/launchSettings.json
+
+# Publish output
+publish/
+artifacts/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node (if used)
+node_modules/
+
+# Local databases / generated files
+*.mdf
+*.ldf
+*.db
+*.sqlite
+*.sqlite3
+
+# Secrets
+secrets.json
+*.pfx
+*.snk
+
+wwwroot/uploads/
+
+

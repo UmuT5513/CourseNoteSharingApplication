@@ -1,0 +1,41 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Pending Notes";
+}
+@model IEnumerable<CourseNoteSharingSystem.Models.Note>
+
+<div class="container page-container">
+    <h1 class="section-title"><i class="bi bi-hourglass-split me-2 text-gradient"></i>Pending Notes</h1>
+    <div class="divider"></div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <i class="bi bi-check-circle"></i>
+            <h5>All caught up!</h5>
+            <p>No pending notes to approve.</p>
+        </div>
+    }
+
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6">
+                <div class="card-premium">
+                    <div class="card-body">
+                        <h4 class="card-title"><i class="bi bi-file-earmark-text me-2" style="color:var(--primary);"></i>@item.Title</h4>
+                        <p class="card-text">@item.Description</p>
+                    </div>
+                    <div class="card-footer">
+                        <form asp-action="Approve" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-success-premium btn-sm">
+                                <i class="bi bi-check-circle me-1"></i> Approve
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

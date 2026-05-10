@@ -1,0 +1,41 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Users";
+}
+@model List<User>
+
+<div class="container page-container">
+    <h1 class="section-title"><i class="bi bi-people me-2 text-gradient"></i>User List</h1>
+    <div class="divider"></div>
+
+    <div class="table-premium">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th><i class="bi bi-person me-1"></i> User Name</th>
+                    <th><i class="bi bi-envelope me-1"></i> Email</th>
+                    <th><i class="bi bi-calendar me-1"></i> Birth Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td><strong>@user.UserName</strong></td>
+                        <td>@user.Email</td>
+                        <td>@user.birthDate</td>
+                        <td>
+                            <a asp-action="UpdateUser" asp-route-id="@user.Id" class="btn btn-gradient btn-sm">
+                                <i class="bi bi-pencil me-1"></i> Update
+                            </a>
+                            <a asp-action="DeleteUser" asp-route-id="@user.Id" class="btn btn-danger-premium btn-sm">
+                                <i class="bi bi-trash me-1"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Roles";
+}
+@model List<Role>
+
+<div class="container page-container">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+            <h1 class="section-title mb-1"><i class="bi bi-shield-check me-2 text-gradient"></i>Role List</h1>
+            <div class="divider"></div>
+        </div>
+        <a asp-action="AddRole" class="btn btn-success-premium">
+            <i class="bi bi-plus-circle me-1"></i> Add New Role
+        </a>
+    </div>
+
+    <div class="table-premium">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th><i class="bi bi-shield me-1"></i> Role Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in Model)
+                {
+                    <tr>
+                        <td><strong>@role.Name</strong></td>
+                        <td>
+                            <a asp-action="UpdateRole" asp-route-id="@role.Id" class="btn btn-gradient btn-sm">
+                                <i class="bi bi-pencil me-1"></i> Update
+                            </a>
+                            <a asp-action="DeleteRole" asp-route-id="@role.Id" class="btn btn-danger-premium btn-sm">
+                                <i class="bi bi-trash me-1"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
