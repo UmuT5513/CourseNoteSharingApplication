@@ -1,0 +1,41 @@
+﻿@using CourseNoteSharingSystem.ViewModels
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+
+@model UpdateProfileViewModel
+
+
+<form method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="FullName" class="control-label"></label>
+        <input asp-for="FullName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Bio" class="control-label"></label>
+        <input asp-for="Bio" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="LinkedInProfileLink" class="control-label"></label>
+        <input asp-for="LinkedInProfileLink" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="OgrenciMail" class="control-label"></label>
+        <input asp-for="OgrenciMail" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="OgrenciNumarasi" class="control-label"></label>
+        <input asp-for="OgrenciNumarasi" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="birthDate" class="control-label"></label>
+        <input asp-for="birthDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save Changes" class="btn btn-primary" />
+    </div>
+</form>

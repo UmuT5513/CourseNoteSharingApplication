@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CourseNoteSharingSystem.Models;
+using Microsoft.AspNetCore.Identity;
 
-namespace CourseNoteSharingSystem.Models
+namespace CourseNoteSharingSystem.ViewModels
 {
     public class AdminDashboardViewModel
     {

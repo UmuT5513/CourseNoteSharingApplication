@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CourseNoteSharingSystem.Models
+namespace CourseNoteSharingSystem.ViewModels
 {
     
     public class SignInModel

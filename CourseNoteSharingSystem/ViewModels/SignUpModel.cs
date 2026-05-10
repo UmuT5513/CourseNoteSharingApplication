@@ -1,4 +1,4 @@
-﻿namespace CourseNoteSharingSystem.Models
+﻿namespace CourseNoteSharingSystem.ViewModels
 {
     public class SignUpModel
     {
