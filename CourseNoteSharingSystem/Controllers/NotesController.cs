@@ -13,7 +13,8 @@ using System.Threading.Tasks;
 
 namespace CourseNoteSharingSystem.Controllers
 {
-    
+
+    [Authorize(Roles = "Admin, User")]
     public class NotesController : Controller
     {
         private readonly CourseNoteSharingSystemContext _context;
@@ -26,8 +27,8 @@ namespace CourseNoteSharingSystem.Controllers
 
         }
 
-        [Authorize(Roles = "Admin")]
-        // GET: Notes
+
+        [HttpGet]
         public async Task<IActionResult> Index(
             string search,
             int? courseId,
@@ -43,8 +44,10 @@ namespace CourseNoteSharingSystem.Controllers
             {
                 notes = notes.Where(n =>
                     n.Title.Contains(search) || 
-                    n.Description.Contains(search)
+                    n.Description.Contains(search) ||
+                    n.Course.CourseName.Contains(search)
                 );
+                
             }
 
             // COURSE FILTER
@@ -74,8 +77,8 @@ namespace CourseNoteSharingSystem.Controllers
         }
 
 
-        // GET: Notes/Details/5
-        [Authorize(Roles = "Admin, User")]
+
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -98,8 +101,7 @@ namespace CourseNoteSharingSystem.Controllers
             return View(note);
         }
 
-        // GET: Notes/Create
-        [Authorize(Roles = "Admin, User")]
+        [HttpGet]
         public IActionResult Create()
         {
             // Dropdown için course listesi
@@ -107,12 +109,9 @@ namespace CourseNoteSharingSystem.Controllers
             return View();
         }
 
-        // POST: Notes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Create(NoteUploadViewModel model)
         {
             var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".txt", ".pptx" };
@@ -169,8 +168,7 @@ namespace CourseNoteSharingSystem.Controllers
             return View(model);
         }
 
-        // GET: Notes/Edit/5
-        [Authorize(Roles = "Admin, User")]
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -186,9 +184,7 @@ namespace CourseNoteSharingSystem.Controllers
             return View(note);
         }
 
-        // POST: Notes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, User")]
@@ -222,8 +218,8 @@ namespace CourseNoteSharingSystem.Controllers
             return View(note);
         }
 
-        // GET: Notes/Delete/5
-        [Authorize(Roles = "Admin, User")]
+
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -241,7 +237,10 @@ namespace CourseNoteSharingSystem.Controllers
             return View(note);
         }
 
-        // POST: Notes/Delete/5
+        
+
+
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, User")]
@@ -257,14 +256,16 @@ namespace CourseNoteSharingSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = "Admin, User")]
+
+
+        
         private bool NoteExists(int id)
         {
             return _context.Note.Any(e => e.Id == id);
         }
 
 
-        [Authorize(Roles = "Admin, User")]
+        [HttpGet]
         public async Task<IActionResult> Download(int id)
         {
             var note = await _context.Note
@@ -307,30 +308,11 @@ namespace CourseNoteSharingSystem.Controllers
                 fileName);
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult PendingNotes()
-        {
-            var notes = _context.Note.Where(n => n.Status == NoteStatus.Pending).ToList();
-            return View(notes);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Approve(int id)
-        {
-            var note = await _context.Note.FirstOrDefaultAsync(n => n.Id == id);
-            if (note == null) return NotFound();
-            note.Status = NoteStatus.Approved;
-            _context.Update(note);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("PendingNotes");
-        }
-
-
+        
 
         [HttpPost]
         [Authorize]
-        [Authorize(Roles = "Admin, User")]
+        
         public async Task<IActionResult> AddComment(int noteId, string content)
         {
             if (string.IsNullOrWhiteSpace(content))

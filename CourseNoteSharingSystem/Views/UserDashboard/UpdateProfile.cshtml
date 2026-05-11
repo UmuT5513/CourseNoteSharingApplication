@@ -1,30 +1,27 @@
 ﻿@using CourseNoteSharingSystem.ViewModels
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
     Layout = "_Layout";
 }
 
 @model UpdateProfileViewModel
 
-
 <form asp-action="UpdateProfile" method="post">
     <input type="hidden" asp-for="Id" />
 
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2>User Summary</h2>
-            <span class="badge bg-secondary">Profile Overview</span>
+    <div class="container py-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+            <div>
+                <h2 class="mb-1">Update Profile</h2>
+                <p class="text-muted mb-0">Edit your personal information and contact details.</p>
+            </div>
+            <span class="badge bg-secondary">Profile Settings</span>
         </div>
-        <hr />
-        <div class="row">
 
-            <div class="col-md-3 mb-4">
+        <div class="row g-4">
+            <div class="col-md-4">
                 <div class="card border-left-primary shadow h-100 py-2 bg-primary text-white">
                     <div class="card-body">
                         <div class="text-xs font-weight-bold text-uppercase mb-1">Full Name</div>
-                        <div class="h5 mb-0 font-weight-bold">@Model.FullName</div>
                         <div class="form-group">
                             <input asp-for="FullName" class="form-control" />
                         </div>
@@ -32,11 +29,10 @@
                 </div>
             </div>
 
-            <div class="col-md-3 mb-4">
+            <div class="col-md-4">
                 <div class="card border-left-success shadow h-100 py-2 bg-success text-white">
                     <div class="card-body">
                         <div class="text-xs font-weight-bold text-uppercase mb-1">Bio</div>
-                        <div class="h5 mb-0 font-weight-bold">@Model.Bio</div>
                         <div class="form-group">
                             <input asp-for="Bio" class="form-control" />
                         </div>
@@ -44,11 +40,10 @@
                 </div>
             </div>
 
-            <div class="col-md-3 mb-4">
+            <div class="col-md-4">
                 <div class="card border-left-info shadow h-100 py-2 bg-info text-white">
                     <div class="card-body">
                         <div class="text-xs font-weight-bold text-uppercase mb-1">LinkedIn Profile</div>
-                        <div class="h5 mb-0 font-weight-bold">@Model.LinkedInProfileLink</div>
                         <div class="form-group">
                             <input asp-for="LinkedInProfileLink" class="form-control" />
                         </div>
@@ -56,33 +51,32 @@
                 </div>
             </div>
 
-            <div class="col-md-3 mb-4">
+            <div class="col-md-4">
                 <div class="card border-left-danger shadow h-100 py-2 bg-danger text-white">
                     <div class="card-body">
                         <div class="text-xs font-weight-bold text-uppercase mb-1">Student Mail</div>
-                        <div class="h5 mb-0 font-weight-bold">@Model.OgrenciMail</div>
                         <div class="form-group">
                             <input asp-for="OgrenciMail" class="form-control" />
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 mb-4">
+
+            <div class="col-md-4">
                 <div class="card border-left-danger shadow h-100 py-2 bg-danger text-white">
                     <div class="card-body">
                         <div class="text-xs font-weight-bold text-uppercase mb-1">Student Number</div>
-                        <div class="h5 mb-0 font-weight-bold">@Model.OgrenciNumarasi</div>
                         <div class="form-group">
                             <input asp-for="OgrenciNumarasi" class="form-control" />
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 mb-4">
+
+            <div class="col-md-4">
                 <div class="card border-left-danger shadow h-100 py-2 bg-danger text-white">
                     <div class="card-body">
                         <div class="text-xs font-weight-bold text-uppercase mb-1">Phone Number</div>
-                        <div class="h5 mb-0 font-weight-bold">@Model.PhoneNumber</div>
                         <div class="form-group">
                             <input asp-for="PhoneNumber" class="form-control" />
                         </div>
@@ -90,19 +84,14 @@
                 </div>
             </div>
 
-            <div class="form-group mt-3">
-                <button type="submit" class="btn btn-light btn-block">
-                    <i class="fas fa-save"></i> Save Changes
+            <div class="col-12">
+                <button type="submit" class="btn btn-light px-4">
+                    <i class="fas fa-save me-1"></i> Save Changes
                 </button>
             </div>
         </div>
     </div>
 </form>
-
-
-
-
-
 
 @section Scripts {
     @{

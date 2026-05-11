@@ -1,4 +1,4 @@
-@using CourseNoteSharingSystem.ViewModels
+    @using CourseNoteSharingSystem.ViewModels
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Sign Up";
@@ -43,11 +43,13 @@
                 <input asp-for="birthDate" class="form-control" type="date" />
                 <span asp-validation-for="birthDate" class="text-danger small"></span>
             </div>
-
-            <div class="mb-3 form-check">
-                <input type="checkbox" asp-for="isAdmin" class="form-check-input" />
-                <label asp-for="isAdmin" class="form-check-label">Admin yetkisi ver</label>
-            </div>
+            @if (User.IsInRole("Admin"))
+                {
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" asp-for="isAdmin" class="form-check-input" />
+                        <label asp-for="isAdmin" class="form-check-label">Admin yetkisi ver</label>
+                    </div>
+                }
 
             <button type="submit" class="btn btn-accent w-100 py-2 mb-3" style="border-radius:var(--radius-sm);">
                 <i class="bi bi-rocket-takeoff me-2"></i> Sign Up

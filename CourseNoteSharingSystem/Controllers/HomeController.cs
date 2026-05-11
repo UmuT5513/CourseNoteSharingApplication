@@ -1,8 +1,10 @@
+using CourseNoteSharingSystem.Data;
 using CourseNoteSharingSystem.Models;
 using CourseNoteSharingSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.View;
 using System.Diagnostics;
 
@@ -14,15 +16,18 @@ namespace CourseNoteSharingSystem.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly CourseNoteSharingSystemContext _context;
 
         public HomeController(
             UserManager<User> userManager,
             RoleManager<Role> roleManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            CourseNoteSharingSystemContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _context = context;
         }
         public IActionResult Index()
         {
@@ -106,7 +111,7 @@ namespace CourseNoteSharingSystem.Controllers
                     if (roles.Contains("Admin"))
                         return RedirectToAction("Index", "AdminDashboard");
                     else
-                        return RedirectToAction("Index", "UserDashboard");
+                        return RedirectToAction("Explore", "Home");
 
                 }
                 else if (signInResult.IsLockedOut)
@@ -195,6 +200,8 @@ namespace CourseNoteSharingSystem.Controllers
             return RedirectToAction("SignUp");
         }
 
+
+
         public async Task<IActionResult> ForgotPassword()
         {
             return View(new ForgotPasswordViewModel());
@@ -265,6 +272,36 @@ namespace CourseNoteSharingSystem.Controllers
         {
             // Bu sayfa sadece bilgilendirme amaçlıdır.
             return View();
+        }
+
+
+
+        public async Task<IActionResult> Explore() 
+        {
+            var recentNotes = await _context.Note
+                .Include(n => n.Course)
+                .Include(n => n.User)
+                .Where(n => n.Status == NoteStatus.Approved)
+                .OrderByDescending(n => n.UploadDate)
+                .Take(6)
+                .ToListAsync();
+
+            var popularNotes = await _context.Note
+                .Include(n => n.Course)
+                .Include(n => n.User)
+                .Where(n => n.Status == NoteStatus.Approved)
+                .OrderByDescending(n => n.DownloadCount)
+                .Take(6)
+                .ToListAsync();
+
+            var courses = await _context.Course
+                .Take(8)
+                .ToListAsync();
+
+            ViewBag.PopularNotes = popularNotes;
+            ViewBag.Courses = courses;
+
+            return View(recentNotes);
         }
     }
 }

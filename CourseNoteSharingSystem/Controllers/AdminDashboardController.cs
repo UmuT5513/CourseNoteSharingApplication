@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace CourseNoteSharingSystem.Controllers
 {
@@ -65,12 +66,9 @@ namespace CourseNoteSharingSystem.Controllers
             return View(courses);
         }
 
-        public IActionResult Notes()
-        {
-            return RedirectToAction("Index", "Notes");
-        }
 
         // update user GET method
+          
         public async Task<IActionResult> UpdateUser(int id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
@@ -98,6 +96,7 @@ namespace CourseNoteSharingSystem.Controllers
 
         // update user POST method
         [HttpPost]
+        
         public async Task<IActionResult> UpdateUser(UpdateUserViewModel model)
         {
             var user = await _userManager.FindByIdAsync(model.Id.ToString());
@@ -210,13 +209,80 @@ namespace CourseNoteSharingSystem.Controllers
         }
 
 
-        public IActionResult PendingNotes()
+        public async Task<IActionResult> Notes(NoteStatus? status)
         {
-            return RedirectToAction("PendingNotes", "Notes");
+            if (status == NoteStatus.Pending)
+            {
+                var pendingNotes = await _context.Note
+                .Include(n => n.Course)
+                .Include(n => n.User)
+                .Where(n => n.Status == NoteStatus.Pending)
+                .OrderByDescending(n => n.UploadDate)
+                .ToListAsync();
+                return View(pendingNotes);
+            }
+            else if (status == NoteStatus.Rejected)
+            {
+                var rejectedNotes = await _context.Note
+                .Include(n => n.Course)
+                .Include(n => n.User)
+                .Where(n => n.Status == NoteStatus.Rejected)
+                .OrderByDescending(n => n.UploadDate)
+                .ToListAsync();
+                return View(rejectedNotes);
+            }
+            else if (status == NoteStatus.Approved)
+            {
+                var approvedNotes = await _context.Note
+                .Include(n => n.Course)
+                .Include(n => n.User)
+                .Where(n => n.Status == NoteStatus.Approved)
+                .OrderByDescending(n => n.UploadDate)
+                .ToListAsync();
+                return View(approvedNotes);
+            }
+            else { 
+            var notes = await _context.Note
+            .Include(n => n.Course)
+            .Include(n => n.User)
+            .OrderByDescending(n => n.UploadDate)
+            .ToListAsync();
+
+            return View(notes);
+            } 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Approve(int id)
+        {
+            var note = await _context.Note.FirstOrDefaultAsync(n => n.Id == id);
+            if (note == null) return NotFound();
+            note.Status = NoteStatus.Approved;
+            _context.Update(note);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("PendingNotes");
         }
 
 
-        
+        [HttpPost]
+        public async Task<IActionResult> Reject(int id)
+        {
+            var note = await _context.Note.FirstOrDefaultAsync(n => n.Id == id);
+            if (note == null) return NotFound();
+            note.Status = NoteStatus.Rejected;
+            _context.Update(note);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("PendingNotes");
+        }
+
+        public async Task<IActionResult> PendingNotes()
+        {
+            var notes = _context.Note.Where(n => n.Status == NoteStatus.Pending).ToList();
+            return View(notes);
+        }
+
+
+
 
     }
 }

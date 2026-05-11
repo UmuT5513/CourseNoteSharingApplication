@@ -42,12 +42,20 @@
                             <i class="bi bi-file-earmark-text me-1"></i> Notes
                         </a>
                         </li>
-                        <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Courses" asp-action="Index">
-                            <i class="bi bi-book me-1"></i> Courses
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Courses" asp-action="Index">
+                                    <i class="bi bi-book me-1"></i> Courses
+                                </a>
+                            </li>
+                        }
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Explore">
+                            <i class="bi bi-house-door me-1"></i> Explore
                         </a>
-                        </li>
-                </ul>
+                    </li>
+                    </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-2">
                         @if (!User.Identity.IsAuthenticated)
                         {
@@ -65,17 +73,25 @@
 
                         @if (User.Identity.IsAuthenticated)
                         {
-                        <li class="nav-item">
-                            <span class="nav-link" style="color:rgba(255,255,255,0.7) !important;">
-                                <i class="bi bi-person-circle me-1"></i> @User.Identity.Name
-                            </span>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-nav-outline" asp-area="" asp-controller="Home" asp-action="SignOut">
-                                <i class="bi bi-box-arrow-right me-1"></i> Sign Out
-                            </a>
-                        </li>
+                            var isAdmin = User.IsInRole("Admin");
+                            var controller = isAdmin ? "AdminDashboard" : "UserDashboard";
+
+                            <li class="nav-item">
+                                <span class="nav-link" style="color:rgba(255,255,255,0.7) !important;">
+                                    <a asp-action="Index" asp-controller="@controller" class="bi bi-person-circle me-1"></a>
+                                    @User.Identity.Name
+                                </span>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="btn btn-nav-outline" asp-area="" asp-controller="Home" asp-action="SignOut">
+                                    <i class="bi bi-box-arrow-right me-1"></i> Sign Out
+                                </a>
+                            </li>
                         }
+
+                        
+                        
 
                     </ul>
                 </div>

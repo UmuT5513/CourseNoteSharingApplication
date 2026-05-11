@@ -1,49 +1,51 @@
 # Course Note Sharing System
 
-Course Note Sharing System, öğrencilerin not yükleyip paylaşabildiği ve yöneticilerin içerik/kullanıcı yönetimi yapabildiği bir ASP.NET Core MVC uygulamasıdır.
+Course Note Sharing System, öğrencilerin ders notlarını yükleyip paylaşabildiği; yöneticilerin ise kullanıcı, rol, kurs ve içerik yönetimi yapabildiği bir ASP.NET Core MVC uygulamasıdır.
 
 ## Teknolojiler
 
 - .NET 10 (`net10.0`)
 - ASP.NET Core MVC + Razor Views
-- Entity Framework Core (SQL Server)
+- Entity Framework Core
+- SQL Server
 - ASP.NET Core Identity
 - Bootstrap
 
-## Özellikler
+## Temel Özellikler
 
 ### Kimlik Doğrulama ve Yetkilendirme
-- Kayıt ol / giriş yap / çıkış yap
-- Rol bazlı yetkilendirme (`Admin`, `User`)
-- Hatalı girişte lockout desteği
-- Şifre sıfırlama akışı (token tabanlı)
+- Kayıt ol, giriş yap ve çıkış yap
+- Rol bazlı yetkilendirme: `Admin`, `User`
+- Hatalı girişlerde lockout desteği
+- Şifre sıfırlama akışı
 
-### Not Yönetimi
-- Not yükleme, görüntüleme, düzenleme, silme
+### Not ve Dosya Yönetimi
+- Not yükleme, görüntüleme, düzenleme ve silme
 - Desteklenen dosya türleri: `.pdf`, `.doc`, `.docx`, `.txt`, `.pptx`
-- Maksimum dosya boyutu: 50MB
-- Not onay süreci: `Pending`, `Approved`, `Rejected`
+- Maksimum dosya boyutu: 50 MB
+- Not durumları: `Pending`, `Approved`, `Rejected`
 - Notlara yorum ekleme
+- İndirme sayısı ve indirme kayıtlarının tutulması
 
-### Takip ve Dashboard
-- Not indirme ve indirme sayısı takibi
-- İndirme log kayıtları
-- Admin dashboard (kullanıcı, rol, kurs ve not yönetimi)
-- User dashboard (kullanıcının not, yorum ve indirme özetleri)
+### Dashboard ve Profil Yönetimi
+- Kullanıcı dashboard’u ile not, yorum ve indirme özetleri
+- Profil bilgilerini görüntüleme ve güncelleme
+- Admin dashboard üzerinden kullanıcı, rol, kurs ve not yönetimi
 
 ## Proje Yapısı
 
-- `CourseNoteSharingSystem/Program.cs` – uygulama başlangıcı ve middleware
-- `CourseNoteSharingSystem/Data/CourseNoteSharingSystemContext.cs` – EF Core DbContext
-- `CourseNoteSharingSystem/Models/` – varlık modelleri
-- `CourseNoteSharingSystem/ViewModels/` – form ve ekran modelleri
-- `CourseNoteSharingSystem/Controllers/` – iş akışı ve endpoint'ler
+- `CourseNoteSharingSystem/Program.cs` – uygulama başlangıcı ve middleware yapılandırması
+- `CourseNoteSharingSystem/Data/CourseNoteSharingSystemContext.cs` – EF Core veritabanı bağlamı
+- `CourseNoteSharingSystem/Models/` – temel veri modelleri
+- `CourseNoteSharingSystem/ViewModels/` – ekran ve form modelleri
+- `CourseNoteSharingSystem/Controllers/` – iş mantığı ve endpoint’ler
 - `CourseNoteSharingSystem/Views/` – Razor view dosyaları
-- `CourseNoteSharingSystem/appsettings.json` – bağlantı ve uygulama ayarları
+- `CourseNoteSharingSystem/wwwroot/uploads/` – yüklenen dosyalar
+- `CourseNoteSharingSystem/appsettings.json` – bağlantı dizesi ve uygulama ayarları
 
-## Kurulum ve Çalıştırma
+## Kurulum
 
-1. `CourseNoteSharingSystem/appsettings.json` dosyasında bağlantı cümlesini düzenleyin:
+1. `CourseNoteSharingSystem/appsettings.json` içindeki bağlantı dizesini düzenleyin:
 
 ```json
 "ConnectionStrings": {
@@ -51,13 +53,13 @@ Course Note Sharing System, öğrencilerin not yükleyip paylaşabildiği ve yö
 }
 ```
 
-2. Bağımlılıkları yükleyin:
+2. Bağımlılıkları geri yükleyin:
 
 ```bash
 dotnet restore
 ```
 
-3. Veritabanını migration'larla güncelleyin:
+3. Veritabanını migration’larla oluşturun/güncelleyin:
 
 ```bash
 dotnet ef database update --project CourseNoteSharingSystem/CourseNoteSharingSystem.csproj
@@ -69,15 +71,15 @@ dotnet ef database update --project CourseNoteSharingSystem/CourseNoteSharingSys
 dotnet run --project CourseNoteSharingSystem/CourseNoteSharingSystem.csproj
 ```
 
-## Varsayılan Rota ve Giriş Akışı
+## Önemli Yönlendirmeler
 
-- Varsayılan rota: `Home/SignIn`
-- Giriş sonrası yönlendirme:
-  - `Admin` → `AdminDashboard/Index`
-  - `User` → `UserDashboard/Index`
+- Varsayılan rota: `Home/Index`
+- Giriş sayfası: `Home/SignIn`
+- Admin paneli: `AdminDashboard/Index`
+- Kullanıcı paneli: `UserDashboard/Index`
 
-## Ek Bilgiler
+## Notlar
 
 - Yüklenen dosyalar `CourseNoteSharingSystem/wwwroot/uploads` altında tutulur.
-- Kimlik doğrulama çerezi: `CNSSAuthCookie`
-- Cookie oturum süresi: 5 dakika (Program.cs ayarına göre)
+- Kimlik doğrulama çerezi adı: `CNSSAuthCookie`
+- Cookie oturum süresi: 5 dakika

@@ -1,0 +1,198 @@
+﻿@model IEnumerable<CourseNoteSharingSystem.Models.Note>
+
+@{
+    ViewData["Title"] = "Manage Notes";
+}
+
+<h1 class="mb-4">Manage Notes</h1>
+
+<div class="mb-4">
+
+    <a asp-action="Notes"
+       class="btn btn-dark">
+
+        All
+
+    </a>
+
+    <a asp-action="Notes"
+       asp-route-status="Pending"
+       class="btn btn-warning">
+
+        Pending
+
+    </a>
+
+    <a asp-action="Notes"
+       asp-route-status="Approved"
+       class="btn btn-success">
+
+        Approved
+
+    </a>
+
+    <a asp-action="Notes"
+       asp-route-status="Rejected"
+       class="btn btn-danger">
+
+        Rejected
+
+    </a>
+
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        No notes found.
+    </div>
+}
+else
+{
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6 mb-4">
+
+                <div class="card shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between">
+
+                            <h4 class="card-title">
+                                @item.Title
+                            </h4>
+
+                            @if (item.Status == NoteStatus.Pending)
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    Pending
+                                </span>
+                            }
+                            else if (item.Status == NoteStatus.Approved)
+                            {
+                                <span class="badge bg-success">
+                                    Approved
+                                </span>
+                            }
+                            else if (item.Status == NoteStatus.Rejected)
+                            {
+                                <span class="badge bg-danger">
+                                    Rejected
+                                </span>
+                            }
+
+                        </div>
+
+                        <hr />
+
+                        <p>
+                            @item.Description
+                        </p>
+
+                        <p>
+                            <strong>Course:</strong>
+                            @(item.Course?.CourseName)
+                        </p>
+
+                        <p>
+                            <strong>Uploaded By:</strong>
+                            @(item.User?.UserName)
+                        </p>
+
+                        <p>
+                            <strong>Upload Date:</strong>
+                            @item.UploadDate.ToShortDateString()
+                        </p>
+
+                        <p>
+                            <strong>Downloads:</strong>
+                            @item.DownloadCount
+                        </p>
+
+                    </div>
+
+                    <div class="card-footer d-flex gap-2 flex-wrap">
+
+                        <a asp-controller="Note"
+                           asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="btn btn-primary btn-sm">
+
+                            Details
+
+                        </a>
+
+                        <a asp-controller="Note"
+                           asp-action="Download"
+                           asp-route-id="@item.Id"
+                           class="btn btn-success btn-sm">
+
+                            Download
+
+                        </a>
+
+                        <a asp-controller="Note"
+                           asp-action="Edit"
+                           asp-route-id="@item.Id"
+                           class="btn btn-warning btn-sm">
+
+                            Edit
+
+                        </a>
+
+                        <a asp-controller="Note"
+                           asp-action="Delete"
+                           asp-route-id="@item.Id"
+                           class="btn btn-danger btn-sm">
+
+                            Delete
+
+                        </a>
+
+                        @if (item.Status == NoteStatus.Pending)
+                        {
+                            <form asp-action="Approve"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@item.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-success btn-sm">
+
+                                    Approve
+
+                                </button>
+
+                            </form>
+
+                            <form asp-action="Reject"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@item.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-danger btn-sm">
+
+                                    Reject
+
+                                </button>
+
+                            </form>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+}
