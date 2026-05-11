@@ -17,35 +17,33 @@
                     <p class="text-muted">Update your note information</p>
                 </div>
 
-<h4>Note</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+                <h4>Note</h4>
+                <hr />
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
 
                     <div class="mb-3">
                         <label asp-for="Title" class="form-label"><i class="bi bi-type me-1"></i> Title</label>
-                <input asp-for="Title" class="form-control" />
+                        <input asp-for="Title" class="form-control" />
                         <span asp-validation-for="Title" class="text-danger small"></span>
-            </div>
+                    </div>
 
                     <div class="mb-3">
                         <label asp-for="Description" class="form-label"><i class="bi bi-text-paragraph me-1"></i> Description</label>
-                <input asp-for="Description" class="form-control" />
+                        <input asp-for="Description" class="form-control" />
                         <span asp-validation-for="Description" class="text-danger small"></span>
-            </div>
+                    </div>
 
                     <div class="mb-3">
                         <label asp-for="FilePath" class="form-label"><i class="bi bi-folder me-1"></i> File Path</label>
-                <input asp-for="FilePath" class="form-control" />
+                        <input asp-for="FilePath" class="form-control" />
                         <span asp-validation-for="FilePath" class="text-danger small"></span>
-            </div>
+                    </div>
 
                     <div class="mb-4">
                         <label asp-for="UploadDate" class="form-label"><i class="bi bi-calendar3 me-1"></i> Upload Date</label>
-                <input asp-for="UploadDate" class="form-control" />
+                        <input asp-for="UploadDate" class="form-control" />
                         <span asp-validation-for="UploadDate" class="text-danger small"></span>
                     </div>
 
@@ -58,16 +56,10 @@
                     <a asp-action="Index" class="text-muted small">
                         <i class="bi bi-arrow-left me-1"></i> Back to List
                     </a>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

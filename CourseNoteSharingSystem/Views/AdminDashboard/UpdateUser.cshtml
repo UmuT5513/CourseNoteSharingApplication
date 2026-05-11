@@ -1,9 +1,6 @@
-
 @using CourseNoteSharingSystem.ViewModels
 
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+@* For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860 *@
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Update User";
@@ -15,6 +12,7 @@
     <div class="row justify-content-center">
         <div class="col-md-7">
             <div class="form-card fade-in">
+
                 <div class="text-center mb-4">
                     <div class="auth-icon mx-auto" style="width:60px;height:60px;font-size:1.4rem;background:linear-gradient(135deg, #fdcb6e, #f39c12);">
                         <i class="bi bi-person-gear"></i>
@@ -23,46 +21,57 @@
                 </div>
 
                 <form asp-action="UpdateUser" method="post">
-    <input type="hidden" name="id" value="@Model.Id" />
-    
+                    <input type="hidden" name="id" value="@Model.Id" />
+
                     <div class="mb-3">
-                        <label asp-for="UserName" class="form-label"><i class="bi bi-person me-1"></i> Username</label>
-        <input asp-for="UserName" class="form-control" />
+                        <label asp-for="UserName" class="form-label">
+                            <i class="bi bi-person me-1"></i> Username
+                        </label>
+                        <input asp-for="UserName" class="form-control" />
                         <span asp-validation-for="UserName" class="text-danger small"></span>
-    </div>
+                    </div>
 
                     <div class="mb-3">
-                        <label asp-for="Email" class="form-label"><i class="bi bi-envelope me-1"></i> Email</label>
-        <input asp-for="Email" class="form-control" />
+                        <label asp-for="Email" class="form-label">
+                            <i class="bi bi-envelope me-1"></i> Email
+                        </label>
+                        <input asp-for="Email" class="form-control" />
                         <span asp-validation-for="Email" class="text-danger small"></span>
-    </div>
+                    </div>
 
                     <div class="mb-3">
-                        <label asp-for="BirthDate" class="form-label"><i class="bi bi-calendar me-1"></i> Birth Date</label>
-        <input asp-for="BirthDate" class="form-control" />
+                        <label asp-for="BirthDate" class="form-label">
+                            <i class="bi bi-calendar me-1"></i> Birth Date
+                        </label>
+                        <input asp-for="BirthDate" class="form-control" />
                         <span asp-validation-for="BirthDate" class="text-danger small"></span>
-    </div>
+                    </div>
 
                     <div class="mb-4">
-                        <label class="form-label"><i class="bi bi-shield me-1"></i> Roles</label>
+                        <label class="form-label">
+                            <i class="bi bi-shield me-1"></i> Roles
+                        </label>
                         @for (int i = 0; i < Model.Roles.Count; i++)
-                {
-                    <div class="form-check">
+                        {
+                            <div class="form-check">
                                 <input class="form-check-input" type="checkbox" asp-for="Roles[@i].IsSelected" />
                                 <label class="form-check-label">@Model.Roles[i].RoleName</label>
                                 <input type="hidden" asp-for="Roles[@i].RoleName" />
+                            </div>
+                        }
                     </div>
-                }
-        </div>
-    </div>
 
                     <button type="submit" class="btn btn-gradient w-100 py-2">
                         <i class="bi bi-check-circle me-2"></i> Save Changes
                     </button>
-</form>
+                </form>
+
                 <div class="text-center mt-3">
-                    <a asp-action="Users" class="text-muted small"><i class="bi bi-arrow-left me-1"></i> Cancel</a>
+                    <a asp-action="Users" class="text-muted small">
+                        <i class="bi bi-arrow-left me-1"></i> Cancel
+                    </a>
                 </div>
+
             </div>
         </div>
     </div>
