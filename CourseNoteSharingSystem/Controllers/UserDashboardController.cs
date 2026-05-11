@@ -84,7 +84,8 @@ namespace CourseNoteSharingSystem.Controllers
                 Bio = user.Bio,
                 LinkedInProfileLink = user.LinkedInProfileLink,
                 OgrenciMail = user.OgrenciMail,
-                OgrenciNumarasi = user.OgrenciNumarasi
+                OgrenciNumarasi = user.OgrenciNumarasi,
+                PhoneNumber = user.PhoneNumber
             };
 
             return View(model);
@@ -112,12 +113,13 @@ namespace CourseNoteSharingSystem.Controllers
             user.LinkedInProfileLink = model.LinkedInProfileLink;
             user.OgrenciMail = model.OgrenciMail;
             user.OgrenciNumarasi = model.OgrenciNumarasi;
-                
+            user.PhoneNumber = model.PhoneNumber;
+
             var result = await _userManager.UpdateAsync(user);
 
             if (result.Succeeded)
             {
-                TempData["SuccessMessage"] = "Profiliniz başarıyla güncellendi.";
+                TempData["SuccessMessage"] = "Your profile has been updated successfully.";
                 return RedirectToAction("Index"); // Dashboard ana sayfasına döner
             }
 
@@ -129,4 +131,23 @@ namespace CourseNoteSharingSystem.Controllers
 
             return View(model);
         }
+
+
+        public async Task<IActionResult> SummaryProfile()
+        {
+            var userId = _userManager.GetUserId(User);
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+            var model = new SummaryProfileViewModel
+            {
+                FullName = user.FullName,
+                Bio = user.Bio,
+                LinkedInProfileLink = user.LinkedInProfileLink,
+                OgrenciMail = user.OgrenciMail,
+                OgrenciNumarasi = user.OgrenciNumarasi,
+                PhoneNumber = user.PhoneNumber
+            };
+            return View(model);
+        }
+    }
 }

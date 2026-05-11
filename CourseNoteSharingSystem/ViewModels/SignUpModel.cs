@@ -15,5 +15,7 @@
         public bool isAdmin { get; set; }
 
         public bool deneme { get; set; } = false;
+
+        public string PhoneNumber { get; set; }
     }
 }
