@@ -1,7 +1,10 @@
+
+
 @{
     ViewData["Title"] = "Courses";
     Layout = "_Layout";
 }
+
 @model IEnumerable<Course>
 
 <div class="container page-container">
@@ -12,29 +15,33 @@
         </div>
         <a asp-action="Create" class="btn btn-gradient">
             <i class="bi bi-plus-circle me-2"></i> Add Course
-        </a>
-    </div>
+    </a>
+</div>
 
     <form method="get" class="search-bar">
         <div class="row g-3 align-items-center">
-            <div class="col-md-6">
+        <div class="col-md-6">
                 <input type="text" name="search" value="@Context.Request.Query["search"]"
                        class="form-control" placeholder="🔍 Search courses..." />
-            </div>
-            <div class="col-md-2">
+        </div>
+
+        <div class="col-md-2">
                 <button type="submit" class="btn btn-gradient w-100">
                     <i class="bi bi-search me-1"></i> Search
-                </button>
-            </div>
+            </button>
+
         </div>
-    </form>
+
+    </div>
+
+</form>
 
     <div class="row g-4">
         @foreach (var item in Model)
-        {
+{
             <div class="col-md-4">
                 <div class="card-premium h-100">
-                    <div class="card-body">
+            <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div style="width:45px;height:45px;border-radius:var(--radius-md);background:var(--gradient-main);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;margin-right:0.8rem;">
                                 <i class="bi bi-book"></i>
@@ -47,20 +54,23 @@
                         <span class="badge bg-light text-dark" style="border-radius:50px;font-size:0.8rem;">
                             <i class="bi bi-file-earmark me-1"></i> @(item.Notes?.Count ?? 0) Notes
                         </span>
-                    </div>
+            </div>
                     <div class="card-footer d-flex flex-wrap gap-2">
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-gradient btn-sm">
                             <i class="bi bi-eye me-1"></i> Details
-                        </a>
+                </a>
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning-premium btn-sm">
                             <i class="bi bi-pencil me-1"></i> Edit
-                        </a>
+                </a>
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger-premium btn-sm">
                             <i class="bi bi-trash me-1"></i> Delete
-                        </a>
-                    </div>
-                </div>
+                </a>
+
             </div>
-        }
+
+        </div>
+
+    </div>
+}
     </div>
 </div>

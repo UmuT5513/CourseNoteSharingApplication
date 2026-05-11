@@ -16,35 +16,39 @@
                     <p class="text-muted">Share your knowledge with the community</p>
                 </div>
 
-                <form asp-action="Create" method="post" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<h4>Note</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="mb-3">
                         <label asp-for="Title" class="form-label"><i class="bi bi-type me-1"></i> Title</label>
                         <input asp-for="Title" class="form-control" placeholder="Enter note title" />
                         <span asp-validation-for="Title" class="text-danger small"></span>
-                    </div>
+            </div>
 
                     <div class="mb-3">
                         <label asp-for="Description" class="form-label"><i class="bi bi-text-paragraph me-1"></i> Description</label>
                         <input asp-for="Description" class="form-control" placeholder="Brief description" />
                         <span asp-validation-for="Description" class="text-danger small"></span>
-                    </div>
+            </div>
 
                     <div class="mb-3">
                         <label asp-for="CourseId" class="form-label"><i class="bi bi-book me-1"></i> Course</label>
                         <select asp-for="CourseId" class="form-select" asp-items="ViewBag.Courses">
-                            <option value="">-- Select Course --</option>
-                        </select>
+                    <option value="">-- Select Course --</option>
+                </select>
                         <span asp-validation-for="CourseId" class="text-danger small"></span>
-                    </div>
+            </div>
 
                     <div class="mb-4">
                         <label class="form-label"><i class="bi bi-paperclip me-1"></i> File</label>
-                        <input asp-for="File" type="file" class="form-control" accept=".pdf,.doc,.docx,.txt,.pptx" />
+                <input asp-for="File" type="file" class="form-control" accept=".pdf,.doc,.docx,.txt,.pptx" />
                         <span asp-validation-for="File" class="text-danger small"></span>
                         <small class="text-muted">Accepted: PDF, Word, PowerPoint, TXT (max 50MB)</small>
-                    </div>
+            </div>
 
                     <button type="submit" class="btn btn-gradient w-100 py-2">
                         <i class="bi bi-cloud-upload me-2"></i> Upload
@@ -57,8 +61,12 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

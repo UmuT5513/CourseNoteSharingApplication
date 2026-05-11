@@ -1,4 +1,5 @@
 @model CourseNoteSharingSystem.Models.Note
+
 @{
     ViewData["Title"] = "Delete Note";
     Layout = "_Layout";
@@ -21,9 +22,9 @@
                         <small class="text-muted"><i class="bi bi-calendar3 me-1"></i> @Model.UploadDate.ToShortDateString()</small>
                     </div>
                 </div>
-
+    
                 <form asp-action="Delete" method="post">
-                    <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Id" />
                     <div class="d-flex gap-2 justify-content-center">
                         <button type="submit" class="btn btn-danger-premium px-4">
                             <i class="bi bi-trash me-1"></i> Delete
@@ -32,8 +33,8 @@
                             <i class="bi bi-x-lg me-1"></i> Cancel
                         </a>
                     </div>
-                </form>
-            </div>
+    </form>
+</div>
         </div>
     </div>
 </div>

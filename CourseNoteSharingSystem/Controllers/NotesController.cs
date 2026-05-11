@@ -1,5 +1,6 @@
 ﻿using CourseNoteSharingSystem.Data;
 using CourseNoteSharingSystem.Models;
+using CourseNoteSharingSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

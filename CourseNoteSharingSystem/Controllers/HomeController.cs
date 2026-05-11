@@ -44,7 +44,8 @@ namespace CourseNoteSharingSystem.Controllers
                 {
                     UserName = model.UserName,
                     Email = model.Email,
-                    birthDate = model.birthDate
+                    birthDate = model.birthDate,
+                    PhoneNumber = model.PhoneNumber
 
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);

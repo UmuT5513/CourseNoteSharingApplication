@@ -1,7 +1,10 @@
+
+
 @{
     ViewData["Title"] = "Course Details";
     Layout = "_Layout";
 }
+
 @model Course
 
 <div class="container page-container">
@@ -25,16 +28,16 @@
             <div class="divider"></div>
 
             @if (!Model.Notes.Any())
-            {
+{
                 <div class="empty-state">
                     <i class="bi bi-journal-x"></i>
                     <h5>No notes yet</h5>
                     <p>Be the first to upload a note for this course!</p>
-                </div>
-            }
+    </div>
+}
 
             @foreach (var note in Model.Notes)
-            {
+{
                 <div class="card-premium mb-3">
                     <div class="card-body">
                         <h5 class="fw-bold"><i class="bi bi-file-earmark-text me-2" style="color:var(--primary);"></i>@note.Title</h5>
@@ -46,10 +49,10 @@
                     <div class="card-footer">
                         <a asp-controller="Notes" asp-action="Details" asp-route-id="@note.Id" class="btn btn-gradient btn-sm">
                             <i class="bi bi-eye me-1"></i> View Note
-                        </a>
+        </a>
                     </div>
-                </div>
-            }
+    </div>
+}
         </div>
     </div>
 </div>

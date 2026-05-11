@@ -1,4 +1,7 @@
-﻿using CourseNoteSharingSystem.Data;
+﻿using Microsoft.EntityFrameworkCore;
+
+using CourseNoteSharingSystem.Data;
+
 using CourseNoteSharingSystem.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

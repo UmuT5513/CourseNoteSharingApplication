@@ -1,4 +1,5 @@
 @model Note
+
 @{
     ViewData["Title"] = "Note Details";
     Layout = "_Layout";
@@ -14,7 +15,7 @@
                         <div style="width:50px;height:50px;border-radius:var(--radius-md);background:var(--gradient-main);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.3rem;margin-right:1rem;">
                             <i class="bi bi-file-earmark-text"></i>
                         </div>
-                        <div>
+<div>
                             <h2 class="mb-0 fw-bold" style="font-size:1.4rem;">@Model.Title</h2>
                             <small class="text-muted">Note Details</small>
                         </div>
@@ -29,8 +30,8 @@
                         <dd class="col-sm-8">@Model.UploadDate.ToString("g")</dd>
                         <dt class="col-sm-4 text-muted"><i class="bi bi-download me-1"></i> Downloads</dt>
                         <dd class="col-sm-8"><span class="badge-premium badge-approved">@Model.DownloadCount</span></dd>
-                    </dl>
-                </div>
+    </dl>
+</div>
                 <div class="card-footer d-flex gap-2">
                     <a asp-action="Download" asp-route-id="@Model.Id" class="btn btn-success-premium">
                         <i class="bi bi-download me-1"></i> Download
@@ -41,48 +42,55 @@
                     <a asp-action="Index" class="btn btn-outline-premium">
                         <i class="bi bi-arrow-left me-1"></i> Back to List
                     </a>
-                </div>
-            </div>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
 
             <!-- Comments Section -->
             <div class="fade-in fade-in-delay-1">
                 <h3 class="section-title"><i class="bi bi-chat-dots me-2"></i>Comments</h3>
                 <div class="divider"></div>
 
-                @if (User.Identity.IsAuthenticated)
-                {
+@if (User.Identity.IsAuthenticated)
+{
                     <div class="card-premium mb-4">
                         <div class="card-body">
                             <form asp-action="AddComment" method="post">
                                 <input type="hidden" name="noteId" value="@Model.Id" />
-                                <div class="mb-3">
+        <div class="mb-3">
                                     <textarea name="content" class="form-control" placeholder="Write a comment..." rows="3"></textarea>
-                                </div>
+        </div>
                                 <button type="submit" class="btn btn-gradient">
                                     <i class="bi bi-send me-1"></i> Add Comment
-                                </button>
-                            </form>
+        </button>
+
+    </form>
                         </div>
                     </div>
-                }
-                else
-                {
+}
+else
+{
                     <div class="alert alert-info" style="border-radius:var(--radius-md);">
                         <i class="bi bi-info-circle me-2"></i> Login to write comments.
-                    </div>
-                }
+    </div>
+}
 
-                @if (!Model.Comments.Any())
-                {
+
+<hr />
+
+@if (!Model.Comments.Any())
+{
                     <div class="empty-state">
                         <i class="bi bi-chat-square-dots"></i>
                         <h5>No comments yet</h5>
                         <p>Be the first to comment!</p>
-                    </div>
-                }
+    </div>
+}
 
                 @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
-                {
+{
                     <div class="comment-card">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <strong><i class="bi bi-person-circle me-1" style="color:var(--primary);"></i> @comment.User.UserName</strong>
@@ -92,6 +100,15 @@
                     </div>
                 }
             </div>
+            </div>
+
+            <hr />
+
+            <p>
+                @comment.Content
+            </p>
+
         </div>
+
     </div>
-</div>
+}
