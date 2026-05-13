@@ -1,6 +1,6 @@
 # Course Note Sharing System
 
-Course Note Sharing System, öğrencilerin ders notlarını yükleyip paylaşabildiği; yöneticilerin ise kullanıcı, rol, kurs ve içerik yönetimi yapabildiği bir ASP.NET Core MVC uygulamasıdır.
+Course Note Sharing System, öğrencilerin ders notlarını yükleyip paylaşabildiği; yöneticilerin ise kullanıcı, rol, kurs ve içerik yönetimi yapabildiği bir ASP.NET Core MVC (Razor Views) uygulamasıdır.
 
 ## Teknolojiler
 
@@ -16,11 +16,13 @@ Course Note Sharing System, öğrencilerin ders notlarını yükleyip paylaşabi
 ### Kimlik Doğrulama ve Yetkilendirme
 - Kayıt ol, giriş yap ve çıkış yap
 - Rol bazlı yetkilendirme: `Admin`, `User`
-- Hatalı girişlerde lockout desteği
+- Hatalı girişlerde lockout desteği (3 deneme)
+- “Remember Me” ile kalıcı oturum
 - Şifre sıfırlama akışı
 
 ### Not ve Dosya Yönetimi
 - Not yükleme, görüntüleme, düzenleme ve silme
+- Not arama, kurs filtresi ve sıralama (tarih/indirilen)
 - Desteklenen dosya türleri: `.pdf`, `.doc`, `.docx`, `.txt`, `.pptx`
 - Maksimum dosya boyutu: 50 MB
 - Not durumları: `Pending`, `Approved`, `Rejected`
@@ -31,6 +33,11 @@ Course Note Sharing System, öğrencilerin ders notlarını yükleyip paylaşabi
 - Kullanıcı dashboard’u ile not, yorum ve indirme özetleri
 - Profil bilgilerini görüntüleme ve güncelleme
 - Admin dashboard üzerinden kullanıcı, rol, kurs ve not yönetimi
+- Onay bekleyen notların admin tarafından yönetimi
+
+### Keşfet ve Popüler Notlar
+- Onaylı notları listeleme (Explore)
+- En çok indirilen notlar
 
 ## Proje Yapısı
 
@@ -75,6 +82,7 @@ dotnet run --project CourseNoteSharingSystem/CourseNoteSharingSystem.csproj
 
 - Varsayılan rota: `Home/Index`
 - Giriş sayfası: `Home/SignIn`
+- Keşfet sayfası: `Home/Explore`
 - Admin paneli: `AdminDashboard/Index`
 - Kullanıcı paneli: `UserDashboard/Index`
 
