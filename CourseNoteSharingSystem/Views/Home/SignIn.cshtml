@@ -46,7 +46,9 @@
             <hr />
 
             <div class="text-center d-flex flex-column gap-1 align-items-center">
-                <span class="text-muted small">Don't have an account?</span>
+                <span class="text-muted small">
+                    <a asp-action="DontYouHaveAnAccount" asp-controller="Home">Don't have an account?</a>
+                </span>
                 <a asp-action="SignUp" asp-controller="Home" class="small fw-semibold">Sign Up</a>
             </div>
         </form>

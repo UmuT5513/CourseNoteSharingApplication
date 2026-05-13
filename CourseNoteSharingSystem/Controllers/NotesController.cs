@@ -181,6 +181,14 @@ namespace CourseNoteSharingSystem.Controllers
             {
                 return NotFound();
             }
+            if (!User.IsInRole("Admin"))
+            {
+                var currentUser = await _userManager.GetUserAsync(User);
+                if (currentUser == null || note.UserId != currentUser.Id)
+                {
+                    return RedirectToAction("AccessDenied", "Home");
+                }
+            }
             return View(note);
         }
 
@@ -199,7 +207,27 @@ namespace CourseNoteSharingSystem.Controllers
             {
                 try
                 {
-                    _context.Update(note);
+                    var existingNote = await _context.Note.FirstOrDefaultAsync(n => n.Id == id);
+                    if (existingNote == null)
+                    {
+                        return NotFound();
+                    }
+
+                    if (!User.IsInRole("Admin"))
+                    {
+                        var currentUser = await _userManager.GetUserAsync(User);
+                        if (currentUser == null || existingNote.UserId != currentUser.Id)
+                        {
+                            return RedirectToAction("AccessDenied", "Home");
+                        }
+                    }
+
+                    existingNote.Title = note.Title;
+                    existingNote.Description = note.Description;
+                    existingNote.FilePath = note.FilePath;
+                    existingNote.UploadDate = note.UploadDate;
+
+                    _context.Update(existingNote);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

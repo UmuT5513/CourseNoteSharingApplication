@@ -215,10 +215,9 @@ namespace CourseNoteSharingSystem.Controllers
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user != null)
                 {
-                    // Generate password reset token
+                    
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    // Here you would typically send the token to the user's email address
-                    // For demonstration purposes, we'll just display it on the page
+                    
                     ViewBag.Token = token;
                     ViewBag.Email = model.Email;
                     return View("ForgotPasswordConfirmation");
@@ -275,7 +274,7 @@ namespace CourseNoteSharingSystem.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> Explore() 
         {
             var recentNotes = await _context.Note

@@ -4,42 +4,21 @@
     ViewData["Title"] = "Manage Notes";
 }
 
-<h1 class="mb-4">Manage Notes</h1>
-
-<div class="mb-4">
-
-    <a asp-action="Notes"
-       class="btn btn-dark">
-
-        All
-
-    </a>
-
-    <a asp-action="Notes"
-       asp-route-status="Pending"
-       class="btn btn-warning">
-
-        Pending
-
-    </a>
-
-    <a asp-action="Notes"
-       asp-route-status="Approved"
-       class="btn btn-success">
-
-        Approved
-
-    </a>
-
-    <a asp-action="Notes"
-       asp-route-status="Rejected"
-       class="btn btn-danger">
-
-        Rejected
-
-    </a>
-
-</div>
+<div class="container page-container">
+    <div class="page-header mb-4">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div>
+                <h1 class="mb-1">Manage Notes</h1>
+                <p class="mb-0">Review, approve, or reject shared notes.</p>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <a asp-action="Notes" class="btn btn-outline-premium">All</a>
+                <a asp-action="Notes" asp-route-status="Pending" class="btn btn-warning-premium">Pending</a>
+                <a asp-action="Notes" asp-route-status="Approved" class="btn btn-success-premium">Approved</a>
+                <a asp-action="Notes" asp-route-status="Rejected" class="btn btn-danger-premium">Rejected</a>
+            </div>
+        </div>
+    </div>
 
 @if (!Model.Any())
 {
@@ -49,37 +28,37 @@
 }
 else
 {
-    <div class="row">
+    <div class="row g-4">
 
         @foreach (var item in Model)
         {
-            <div class="col-md-6 mb-4">
+            <div class="col-md-6">
 
-                <div class="card shadow-sm h-100">
+                <div class="card-premium h-100">
 
                     <div class="card-body">
 
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between align-items-start gap-2">
 
-                            <h4 class="card-title">
+                            <h4 class="card-title mb-0">
                                 @item.Title
                             </h4>
 
                             @if (item.Status == NoteStatus.Pending)
                             {
-                                <span class="badge bg-warning text-dark">
+                                <span class="badge badge-premium badge-pending">
                                     Pending
                                 </span>
                             }
                             else if (item.Status == NoteStatus.Approved)
                             {
-                                <span class="badge bg-success">
+                                <span class="badge badge-premium badge-approved">
                                     Approved
                                 </span>
                             }
                             else if (item.Status == NoteStatus.Rejected)
                             {
-                                <span class="badge bg-danger">
+                                <span class="badge badge-premium badge-rejected">
                                     Rejected
                                 </span>
                             }
@@ -116,37 +95,37 @@ else
 
                     <div class="card-footer d-flex gap-2 flex-wrap">
 
-                        <a asp-controller="Note"
+                        <a asp-controller="Notes"
                            asp-action="Details"
                            asp-route-id="@item.Id"
-                           class="btn btn-primary btn-sm">
+                           class="btn btn-gradient btn-sm">
 
                             Details
 
                         </a>
 
-                        <a asp-controller="Note"
+                        <a asp-controller="Notes"
                            asp-action="Download"
                            asp-route-id="@item.Id"
-                           class="btn btn-success btn-sm">
+                           class="btn btn-success-premium btn-sm">
 
                             Download
 
                         </a>
 
-                        <a asp-controller="Note"
+                        <a asp-controller="Notes"
                            asp-action="Edit"
                            asp-route-id="@item.Id"
-                           class="btn btn-warning btn-sm">
+                           class="btn btn-warning-premium btn-sm">
 
                             Edit
 
                         </a>
 
-                        <a asp-controller="Note"
+                        <a asp-controller="Notes"
                            asp-action="Delete"
                            asp-route-id="@item.Id"
-                           class="btn btn-danger btn-sm">
+                           class="btn btn-danger-premium btn-sm">
 
                             Delete
 
@@ -162,7 +141,7 @@ else
                                        value="@item.Id" />
 
                                 <button type="submit"
-                                        class="btn btn-success btn-sm">
+                                        class="btn btn-success-premium btn-sm">
 
                                     Approve
 
@@ -178,7 +157,7 @@ else
                                        value="@item.Id" />
 
                                 <button type="submit"
-                                        class="btn btn-danger btn-sm">
+                                        class="btn btn-danger-premium btn-sm">
 
                                     Reject
 

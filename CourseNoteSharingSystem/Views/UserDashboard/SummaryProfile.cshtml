@@ -5,68 +5,70 @@
 
 @model SummaryProfileViewModel
 
-<div class="container py-4">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
-        <div>
-            <h2 class="mb-1">Profile Summary</h2>
-            <p class="text-muted mb-0">A quick overview of your public profile information.</p>
+<div class="container page-container">
+    <div class="page-header mb-4">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div>
+                <h2 class="mb-1">Profile Summary</h2>
+                <p class="mb-0">A quick overview of your public profile information.</p>
+            </div>
+            <a asp-controller="UserDashboard" asp-action="UpdateProfile" class="btn btn-accent">
+                Update Profile
+            </a>
         </div>
-        <a asp-controller="UserDashboard" asp-action="UpdateProfile" class="btn btn-primary">
-            Update Profile
-        </a>
     </div>
 
     <div class="row g-4">
         <div class="col-md-4">
-            <div class="card border-left-primary shadow h-100 py-2 bg-primary text-white">
+            <div class="card-premium h-100">
                 <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Full Name</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.FullName</div>
+                    <div class="text-uppercase text-muted small mb-1">Full Name</div>
+                    <div class="h5 mb-0 fw-semibold">@Model.FullName</div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card border-left-success shadow h-100 py-2 bg-success text-white">
+            <div class="card-premium h-100">
                 <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Bio</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.Bio</div>
+                    <div class="text-uppercase text-muted small mb-1">Bio</div>
+                    <div class="h5 mb-0 fw-semibold">@Model.Bio</div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card border-left-info shadow h-100 py-2 bg-info text-white">
+            <div class="card-premium h-100">
                 <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">LinkedIn Profile</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.LinkedInProfileLink</div>
+                    <div class="text-uppercase text-muted small mb-1">LinkedIn Profile</div>
+                    <div class="h5 mb-0 fw-semibold">@Model.LinkedInProfileLink</div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card border-left-danger shadow h-100 py-2 bg-danger text-white">
+            <div class="card-premium h-100">
                 <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Student Mail</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.OgrenciMail</div>
+                    <div class="text-uppercase text-muted small mb-1">Student Mail</div>
+                    <div class="h5 mb-0 fw-semibold">@Model.OgrenciMail</div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card border-left-danger shadow h-100 py-2 bg-danger text-white">
+            <div class="card-premium h-100">
                 <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Student Number</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.OgrenciNumarasi</div>
+                    <div class="text-uppercase text-muted small mb-1">Student Number</div>
+                    <div class="h5 mb-0 fw-semibold">@Model.OgrenciNumarasi</div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card border-left-danger shadow h-100 py-2 bg-danger text-white">
+            <div class="card-premium h-100">
                 <div class="card-body">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Phone Number</div>
-                    <div class="h5 mb-0 font-weight-bold">@Model.PhoneNumber</div>
+                    <div class="text-uppercase text-muted small mb-1">Phone Number</div>
+                    <div class="h5 mb-0 fw-semibold">@Model.PhoneNumber</div>
                 </div>
             </div>
         </div>
