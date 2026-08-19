@@ -1,3 +1,9 @@
+<img width="1280" height="568" alt="1" src="https://github.com/user-attachments/assets/635e7944-c1c1-4244-9f31-3e11493df3ad" />
+<img width="1165" height="938" alt="4" src="https://github.com/user-attachments/assets/253da675-0de3-4f33-9a69-03031d3dae05" />
+<img width="800" height="782" alt="3" src="https://github.com/user-attachments/assets/ec364a5d-fb7c-4875-ad37-6e2b72e2366b" />
+<img width="782" height="800" alt="2" src="https://github.com/user-attachments/assets/d48cafae-9ab2-48a8-a84a-243d36cfe666" />
+
+
 # Course Note Sharing System
 
 Course Note Sharing System, öğrencilerin ders notlarını yükleyip paylaşabildiği; yöneticilerin ise kullanıcı, rol, kurs ve içerik yönetimi yapabildiği bir ASP.NET Core MVC (Razor Views) uygulamasıdır.
